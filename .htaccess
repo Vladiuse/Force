@@ -1,0 +1,4 @@
+PassengerEnabled On
+PassengerAppRoot /home/v/vladiuse/dr-force/public_html/HelloDjango/HelloDjango
+PassengerPython /home/v/vladiuse/dr-force/public_html/venv/bin/python
+
