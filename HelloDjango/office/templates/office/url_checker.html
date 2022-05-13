@@ -1,0 +1,71 @@
+{% extends 'office/base.html' %}
+{% block content %}
+<style>
+    .url-form{
+        padding: 20px;
+        width: 30%;
+        margin: 20px 0;
+    }
+    #emailHelp{
+        display: block;
+        margin: 5px 0;
+    }
+</style>
+
+<div class="main-wrapper">
+    <h2>Link Checker</h2>
+    <h3>Result: <button type="button" class="btn btn-{{checker.result.result_html}}">{{checker.result.result_text}}</button></h3>
+    <h5>Url: {{data}}</h5>
+
+    <div class="url-form">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+          <label for="exampleInputEmail1"></label>
+          <input type="url" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="https://exsample.com" name="url">
+          <small id="emailHelp" class="form-text text-muted">Enter Url</small>
+        </div>
+  
+        <button type="submit" class="btn btn-primary">Check Url</button>
+      </form>
+    </div>
+
+    <table class="table" style="margin-top: 10px;">
+        <thead class="table-light">
+        <tr>
+            <th>Описание</th>
+            <th>Код</th>
+            <th>Описание ошибки</th>
+            <th>Ошибки</th>
+            <th>ResultValue</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for checker in checker.results_from_checkers %}
+        <tr>
+            <td>{{ checker.description }}</td>
+            <td class="mb-2 bg-{{ checker.status_html }}">
+                {{ checker.status_text }}
+            </td>
+            <td>{% for info in checker.info %}
+                {{ info }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for error in checker.errors %}
+                {{ error }}<br>
+                {% endfor %}
+            </td>
+            <td>{% if checker.result_value %}
+                {{ checker.result_value }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="site-img">
+
+    </div>
+</div>
+{% endblock %}

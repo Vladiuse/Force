@@ -1,0 +1,26 @@
+{% extends 'office/base.html' %}
+{% block content %}
+<title>{{page_title}}</title>
+<div class="main-wrapper">
+    <h1>Spends from domain</h1>
+    <table class="table" style="margin-top: 10px;">
+        <thead class="table-light">
+        <tr>
+            <th>Домен</th>
+            <th>Сегодня</th>
+            <th>Общие</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for domain in domains %}
+        <tr>
+            <td>{{domain.domain}}</td>
+            <td> {{domain.today_spend|default_if_none:"nothing"}}</td>
+            <td> {{domain.all_spend}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

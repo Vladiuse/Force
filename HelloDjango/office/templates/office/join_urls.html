@@ -1,0 +1,166 @@
+{% extends 'office/base.html' %}
+{% block content %}
+<style>
+  .test{
+    border-width: 1px;
+    border-color: aqua;
+  }
+  .not-copy::selection{
+    background: transparent;
+  }
+  .not-copy::-moz-selection {
+   background: transparent;
+}
+  .badge{
+    margin-top: 3px;
+  }
+  #exampleFormControlTextarea1{
+    height: 500px;
+  }
+</style>
+
+<div class="main-wrapper">
+  
+    <h2>Сшыватель ссылок</h2>
+    <!-- <form class=""> -->
+      
+    <!-- <div class="container-sm"> -->
+      <div class="row">
+        <div class="col-3 test">
+          <select class="form-control form-control-lg" id="select-baer">
+            <option value="none">Выберете Баера</option>
+                 <option value="ignat" class="baer" >Игнат &#127752</option>
+                 <option value="sergey" class="baer">Сергей &#128507</option>
+                <option value="sashko" class="baer">Сашко 🇺🇸</option>
+          </select>
+        </div>
+        <div class="col-1 test"></div>
+        <div class="col-8 test"></div>
+      </div>
+      
+      <div class="row">
+        <div class="col-3 test">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1" >Вставте домены</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" disabled rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col-1 test">
+          <label for="exampleFormControlTextarea1" class="not-copy">Проверка</label><br>
+          
+          <div id="status-codes">
+            <!-- <span class="badge bg-success">200</span><br>
+            <span class="badge bg-success">200</span><br>
+            <span class="badge bg-danger">404</span><br> -->
+          </div>
+        </div>
+        <div class="col-8 test">
+          
+            <label for="exampleFormControlTextarea1" class="not-copy">Результат</label>
+            <div id="result-area">
+              
+            </div>
+          
+        </div>
+      </div>
+      <button class="btn btn-primary" disabled id="check-urls">Check Urls</button>
+    <!-- </div> -->
+  <!-- </form> -->
+  <!-- <div class="container-sm"> -->
+    
+      
+         
+      
+        
+
+
+        
+  <!-- </div> -->
+</div>
+{% verbatim %}
+<script>
+  let baer = 'BAER';
+  domain_tail = `?bay=${baer}&adset_name={{adset.name}}&ad_id={{ad.id}}&fbp=xxxxxx`
+  let PROTOKOL = location.protocol;
+  let urls_w_protokol = []
+  // проставка баера
+  $('#select-baer').change(function(){
+    var baer = $(this).val();
+    domain_tail = `?bay=${baer}&adset_name={{adset.name}}&ad_id={{ad.id}}&fbp=xxxxxxxxxx`
+    if (baer == 'none'){$('#exampleFormControlTextarea1').attr('disabled', 'disabled')}
+    else {
+      $('#exampleFormControlTextarea1').removeAttr('disabled')
+    }
+  })
+  $('#check-urls').click(function(){
+    $('#status-codes').empty();
+    // console.log('empty')
+    // console.log('start check')
+    for (i in urls_w_protokol){
+      let url = urls_w_protokol[i]
+      $.ajax({
+        url  : url,
+        async: false,
+        type : 'get',
+        success: function(data, textStatus, xhr){addStatusCode(xhr.status); console.log(xhr.status, 'status_code', url)},
+        error: function(data, textStatus, xhr){addStatusCode(xhr.status); console.log(xhr.status, 'status_code', url)},
+      })
+      
+    }
+  })
+  $('#exampleFormControlTextarea1').blur(function(){
+    domains = getDomainsFromForm();
+    join_doms = joinDomains(domains);
+    urls_w_protokol = join_doms;
+    // При загрузке доменов сделать кнопку проверки ссылок активной
+    if (urls_w_protokol.length >0){$('#check-urls').removeAttr('disabled')}
+    showResult(join_doms);
+  })
+
+  
+  // получить список доменов с текс-ареа
+  function getDomainsFromForm(){
+    domains_text = $('#exampleFormControlTextarea1').val();
+    domains = domains_text.split('\n')
+    return domains
+  }
+  // сшить домены
+  function joinDomains(domains){
+    joins = []
+    for (i in domains){
+      // если есть протокол
+      if (domains[i].startsWith('http')){
+        dom = domains[i]
+        joins.push(dom)
+      }
+      else if (domains[i] != '') {
+        join_dom = `${PROTOKOL}//${domains[i]}/${domain_tail}`
+        joins.push(join_dom)
+      }
+      
+    }
+    return joins
+  }
+  // вывести результат
+  function showResult(join_doms){
+    $('#result-area').empty();
+    for (i in join_doms){      
+        $('#result-area').append(join_doms[i] + '<br>')
+      }
+  }
+  // проставить статус код запроса 
+  function addStatusCode(status){
+    if (status == 200){
+      result_span = `<span class="badge bg-success">${status}</span><br>`
+    }
+    else if (status === undefined) {
+      result_span = `<span class="badge bg-danger">Error</span><br>`
+    }
+    else {
+      result_span = `<span class="badge bg-danger">${status}</span><br>`
+    }
+    $('#status-codes').append(result_span)
+  }
+</script>
+{% endverbatim %}
+{% endblock %}

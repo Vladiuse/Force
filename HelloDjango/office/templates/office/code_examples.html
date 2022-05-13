@@ -1,0 +1,175 @@
+{% extends 'office/base.html' %}
+{% block content %}
+<title>{{page_title}}</title>
+<style>
+    .code-wrapper{
+    background-color: #C0C0C0;
+     width: 50%;
+     border-radius: 20px;
+     padding: 20px;
+     display: none;
+     max-width: 50%;
+/* <!--     word-wrap: break-word;--> */
+     overflow: hidden;
+    }
+</style>
+<div class="main-wrapper">
+    <div id="buttons-wraper">
+        </div><br>
+        <div id="sub-buttons-wraper">
+        </div>
+<hr>
+
+<div class="examples-block">
+    <a class="btn btn-primary btn btn-warning" id="textCopy"
+                    role="button">Copy</a>
+<br>
+    <div class="buttons">
+        {% for example in examples %}
+        <button class="btn btn-primary btn btn-secondary exs" id="{{ forloop.counter0 }}" role="button">{{ example}}</button>
+        {% endfor %}
+    </div>
+    <div class="buttons">
+      <button class="btn btn-primary btn btn-secondary clang" id="html" role="button">Html</button>
+      <button class="btn btn-primary btn btn-secondary clang" id="css" role="button">Css</button>
+      <button class="btn btn-primary btn btn-secondary clang" id="js1" role="button">Js</button>
+    </div>
+
+    <pre>
+        <code class="to-show">
+        </code>
+    </pre>
+
+    <div class="info">
+        {% for example in examples %}
+        <pre>
+            <code>
+            <p class="html {{ forloop.counter0 }}">{{ example.html_code }}</p>
+            <p class="css {{ forloop.counter0 }}">{{ example.css_code }}</p>
+            <p class="js1 {{ forloop.counter0 }}">{{ example.js_code }}</p>
+        </code>
+        </pre>
+
+        {% endfor %}
+    </div>
+
+
+
+</div>
+
+
+</div>
+<script>
+    // new buttons script
+    SITE_URl = location.protocol + '//' + location.host + '/';
+    BUTTONS_URL = SITE_URl +  "copy_paste"
+    SUB_BUTTONS_URL = SITE_URl + 'copy_paste/code_examples_data'
+    LOADED_GROUPS = {}
+    SUB_BUTTONS_DATA = {}
+
+    function  loadButtons(){
+        // запрос данных по кнопкам
+        x = $.get(BUTTONS_URL, function(response){
+            if (response['result'] == 'success')
+             {drawButtons(response['buttons'], '#buttons-wraper')} 
+             else {console.log('Error load buttons')}
+        })
+
+    }
+
+    // отрисовка кнопок
+    function drawButtons(data, selector){
+        console.log(data)
+        for (i in data){
+            button_id = data[i]['id']
+            button_name = data[i]['name']
+            button = $(`<button class="btn btn-secondary btn-secondary xxx" id="${button_id}">${button_name}</button>`)
+            // button.text('xxx')
+            $(selector).append(button)
+       
+        }}
+        loadButtons();
+
+    // загрузка субкнопок
+    function getSubButton(group_id){
+        
+        data= {'group_id': group_id}
+        $.get(SUB_BUTTONS_URL, data, function(response){
+            // console.log(response) sub-buttons-wraper
+            if (response['result'] == 'success')
+             {
+                 drawButtons(response['buttons'], '#sub-buttons-wraper');
+                 LOADED_GROUPS[group_id] = group_id;
+                 SUB_BUTTONS_DATA[group_id] = response['buttons']
+
+                } 
+             else {console.log('Error load sub-buttons')}
+        })
+    }
+
+    // при клике на кнопку - закрузка субкнопок
+    $('body').on('click','.xxx',function(){
+        $('#sub-buttons-wraper').empty();
+        console.log($(this).attr('id'), 'id')
+        getSubButton($(this).attr('id'))
+    })
+
+</script>
+<script>
+$(function(){
+    // code ...
+    var messageBox = $('.message')
+    messageBox.hide()
+    function showMessage(text){
+    messageBox.children().text(text)
+    messageBox.fadeIn(500).delay(3500).fadeOut(2000)
+    }
+    var activeBtnStatus = 'active-req';
+    var buttonsOnPage = 2;
+    $('.info p').hide();
+    $('.exs, .clang').click(function(){
+        $(this).siblings().removeClass(activeBtnStatus)
+        $(this).addClass(activeBtnStatus)
+        $('.exs, .clang').css('color', 'white')
+        $('')
+        var classToShow = '';
+        var buttonCount = 0;
+        $('.' + activeBtnStatus).each(function(){
+            $(this).css('color', 'red')
+            console.log($(this).attr('id'))
+            classToShow += '.' + $(this).attr('id')
+            buttonCount += 1
+        })
+    if (buttonCount == buttonsOnPage) {
+        // для копирования текста
+        $('.copy').click(function(){
+        console.log(123)
+        showMessage('Скопировано')
+    })
+
+        $('.info p').hide();
+        $('.to-show').text($(classToShow).text())
+
+        $('#textCopy').click(function() {
+            var el = $('.to-show')
+            var $tmp = $("<textarea>");
+            $("body").append($tmp);
+            $tmp.val($(el).text()).select();
+            document.execCommand("copy");
+            $tmp.remove();
+        })
+
+
+    }
+
+    // console.log($(classToShow).show())
+        // $('.info p').hide(); // hide all info blocks
+        // $('.' + $(this).attr('id')).show()
+
+    })
+})
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'office/base.html' %}
+{% block content %}
+<div class="main-wrapper">
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+  {% for offer in offers %}
+  
+  <div class="col">
+    <div class="card h-100" style="width: 18rem;">
+      <img src="http://45.32.144.228/{{offer.kt_data.preview_path}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h6 class="card-title">{{offer.kt_data.name}}</h6>
+        <p class="card-text">
+          {%for c in offer.kt_data.country%}
+          <span class="flag-icon flag-icon-{{c}} flag-icon-squared"></span> | {{c}}
+          {% endfor %}
+         
+        </p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}

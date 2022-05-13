@@ -1,0 +1,62 @@
+{% extends 'office/base.html' %}
+{% block content %}
+
+<title>{{ page_title }}</title>
+<div class="main-wrapper">
+    <h3>
+        {{ data.main.result_text }}
+    </h3>
+    <div class="icon-block">
+        Проверяемый сайт: <a href="http://45.32.144.228{{offer.kt_data.local_path}}" target="_blank">[{{offer.kt_id}}] {{offer.kt_data.name}}</a>
+        <a href="http://45.32.144.228/admin/#!/editor/offer/{{offer.kt_id}}" target="_blank"><i class="fas fa-user-edit"></i></a>
+         <a class="btn btn-dark" role="button" href="{% url 'office:checker_offer' offer.kt_id 1 %}">Обновить <i
+            class="fas fa-cloud-download-alt"></i></a>
+    </div>
+    <img src="https://prosalecap12.store/{{offer.kt_data.preview_path}}" style="width: 400px">
+
+
+    <br> {{ is_check_start }}
+
+    <table class="table" style="margin-top: 10px;">
+        <thead class="table-light">
+        <tr>
+            <th>Описание</th>
+            <th>Код</th>
+            <th>Описание ошибки</th>
+            <th>Ошибки</th>
+            <th>ResultValue</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for checker in data.checkers %}
+        <tr>
+            <td>{{ checker.description }}</td>
+            <td class="mb-2 bg-{{ checker.status_html }}">
+                {{ checker.status_text }}
+            </td>
+            <td>{% for info in checker.info %}
+                {{ info }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for error in checker.errors %}
+                {{ error }}<br>
+                {% endfor %}
+            </td>
+            <td>{% if checker.result_value %}
+                {{ checker.result_value }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<script>
+    [...document.getElementsByTagName('img')].forEach(elem => {
+      elem.onerror = function () {
+        elem.setAttribute('src', 'https://i.mycdn.me/image?id=814327925848&t=0&plc=WEB&tkn=*GsdCWAmDvjL9x0vo-r1OjNdHSKY');
+      }
+    });
+  </script>
+</div>
+{% endblock %}
