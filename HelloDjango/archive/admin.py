@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Site, SiteCategoty, Languege, Cataloge, Tag
+from .models import Site, SiteCategoty, Languege, Cataloge, Tag, Test
 # Register your models here.
 
 class SiteAdmin(admin.ModelAdmin):
@@ -27,3 +27,4 @@ admin.site.register(SiteCategoty)
 admin.site.register(Languege, LanguegeAdmin)
 admin.site.register(Cataloge, CatalogeAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Test)

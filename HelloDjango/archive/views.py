@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Site, SiteCategoty, Languege, Cataloge, Tag
+from .models import Site, SiteCategoty, Languege, Cataloge, Tag, Test
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .func import transform_list_object
@@ -233,6 +233,25 @@ def remove_cataloge(request):
             'error': 'Wrong method'
         }
         return JsonResponse(answer, safe=False)
+
+
+def test(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        phone = request.POST['phone']
+        test = Test(name=name, phone=phone)
+        test.save()
+        tests = Test.objects.all()
+        content = {
+            'tests': tests
+        }
+        return render(request, 'archive/test.html', content)
+    else:
+        tests = Test.objects.all()
+        content = {
+            'tests': tests
+        }
+    return render(request, 'archive/test.html', content)
 
 
 

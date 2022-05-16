@@ -10,5 +10,6 @@ urlpatterns = [
     path('/update_name_n_desc', views.update_name_n_desc), 
     path('/add_cataloge', views.add_cataloge),  
     path('/add_site_to_cataloge', views.add_site_to_cataloge),
-    path('/remove_cataloge', views.remove_cataloge),  
+    path('/remove_cataloge', views.remove_cataloge),
+    path('/test', views.test),
 ]

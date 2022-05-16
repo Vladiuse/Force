@@ -132,3 +132,8 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Test(models.Model):
+    name = models.CharField(max_length=30)
+    phone = models.CharField(max_length=30)
