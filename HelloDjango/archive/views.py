@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .func import transform_list_object
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+import requests as req
 
 @login_required
 def index(request):
@@ -236,22 +237,26 @@ def remove_cataloge(request):
 
 
 def test(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        phone = request.POST['phone']
-        test = Test(name=name, phone=phone)
-        test.save()
-        tests = Test.objects.all()
-        content = {
-            'tests': tests
-        }
-        return render(request, 'archive/test.html', content)
-    else:
-        tests = Test.objects.all()
-        content = {
-            'tests': tests
-        }
-    return render(request, 'archive/test.html', content)
+    url = 'https://blog-feed.org/okucin-novosti/?ufl=14130'
+    res = req.get(url)
+    text = res.text
+    return HttpResponse(text)
+    # if request.method == 'POST':
+    #     name = request.POST['name']
+    #     phone = request.POST['phone']
+    #     test = Test(name=name, phone=phone)
+    #     test.save()
+    #     tests = Test.objects.all()
+    #     content = {
+    #         'tests': tests
+    #     }
+    #     return render(request, 'archive/test.html', content)
+    # else:
+    #     tests = Test.objects.all()
+    #     content = {
+    #         'tests': tests
+    #     }
+    # return render(request, 'archive/test.html', content)
 
 
 
