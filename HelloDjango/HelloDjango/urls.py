@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('office.urls')),
     path('archive', include('archive.urls')),
+    path('checker', include('checker.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('accounts/login/', LoginView.as_view(), name='login'),

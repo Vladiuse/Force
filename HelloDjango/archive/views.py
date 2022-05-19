@@ -7,6 +7,8 @@ from .func import transform_list_object
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import requests as req
+from bs4 import BeautifulSoup
+import os
 
 @login_required
 def index(request):
@@ -236,11 +238,33 @@ def remove_cataloge(request):
         return JsonResponse(answer, safe=False)
 
 
-def test(request):
-    url = 'https://blog-feed.org/okucin-novosti/?ufl=14130'
-    res = req.get(url)
-    text = res.text
-    return HttpResponse(text)
+# def test(request):
+#     with open('./script.js') as file:
+#         script = file.read()
+#     with open('./styles.css') as file:
+#         styles = file.read()
+#     with open('./block.html') as file:
+#         block = file.read()
+#     url = 'https://blog-feed.org/blog2-herbamanan/?ufl=14114'
+#     res = req.get(url)
+#     text = res.text
+#     soup = BeautifulSoup(text, 'lxml')
+#     script_tag = soup.new_tag("script")
+#     script_tag.string = script
+#     soup.html.body.append(script_tag)
+#
+#     styles_tag = soup.new_tag('style')
+#     styles_tag.string = styles
+#     soup.html.head.insert(0,styles_tag)
+#
+#     div_soup = BeautifulSoup(block, 'lxml')
+#     div_soup = div_soup.find('div', {"id": "oi-toolbar"})
+#     soup.html.body.insert(0,div_soup)
+#     # div_tag.string = block
+#
+#
+#
+#     return HttpResponse(str(soup))
     # if request.method == 'POST':
     #     name = request.POST['name']
     #     phone = request.POST['phone']
