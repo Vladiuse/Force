@@ -122,6 +122,8 @@ $(document).ready(function(){
             errorCount ++
             updateErrorMarker()
         }
+
+        // Обновить кол-во ошибок в тулбаре
         function updateErrorMarker(){
             let marker = $('#oi-toolbar .error-counter .marker')
             let markerInfo = $('#oi-toolbar .error-counter .info')
@@ -133,29 +135,38 @@ $(document).ready(function(){
             }
             markerInfo.text(errorCount)
         }
+
+        // показать\скрыть тулбар
         $('#oi-toolbar .io-main').click(function(){
             $('#oi-toolbar #back-info').toggle(300)
         })
 
-        $('#oi-toolbar .original-link p').click(function(){
-            let url = $(this).attr('data-href')
-            console.log(url)
-            window.open(url, '_blank').focus();
-        })
-
         // Поиск элементов с script внутри (возможно это скрипт даты)
         function findSriptsDate(){
-//            let elems = $('body script').parent()
         let elems = $('body script')
             elems = elems.filter(function(){
-                if ($(this).is('body') != true) {return true}
+                if ($(this).parent().is('body') != true) {return true}
             })
             elems.addClass(debugScritpDate)
             elems.text('!!!')
         }
 
-        let oiToolbar = $('#oi-toolbar')
+        // открытие оригинальной ссылки
+        $('#oi-toolbar .original-link p').click(function(){
+            let url = $(this).attr('data-href')
+            console.log(url)
+            window.open(url, '_blank').focus();
+        })
+        
+        // закрытие тулбара при скроле
+        $(window).scroll(function (event) {
+            var scroll = $(window).scrollTop();
+            $('#oi-toolbar #back-info').hide(300)
+        });
+
+        // Включение тулбара клавишами
         $(document).keyup(function(e) {
+            let oiToolbar = $('#oi-toolbar')
             if (e.ctrlKey && e.keyCode == 73) {
                 console.log('INTEGRATIONS')
                 if (isDebug){isDebug = false}else{isDebug = true}
