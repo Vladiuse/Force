@@ -4,17 +4,17 @@
         left: 50px;
         width: 200px;
         background-color: #e7e6d3;
-        z-index: 1000;
+        z-index: 99000;
         padding: 5px;
         border-radius: 5px;
         border: 2px solid #9e9e94;
         font-size: 15px !important;
     }
     a.__debug{
-        border: 2px solid rgb(0, 183, 255);
+        border: 2px solid rgb(0, 183, 255) !important;
     }
     form.__debug_no_select{
-        border: 2px solid red;
+        border: 2px solid red !important;
     }
     input.__debug_no_tel{
         background-color: red !important;
@@ -34,6 +34,9 @@
     }
     a img.__debug{
         border: 2px solid green;
+    }
+    img.__debug.__debug_double{
+        border: 3px dashed red !important;
     }
     span.back-warning.__debug{
         background-color: aquamarine;

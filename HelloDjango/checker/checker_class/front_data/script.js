@@ -14,6 +14,7 @@ $(document).ready(function(){
         let formNoSelectClass = '__debug_no_select';
         let fromInputNotelClass = '__debug_no_tel';
         let debugScritpDate = '__debug_script_date'
+        let doubleImgStyle = '__debug_double'
         function onOffDebug(){
             if (isDebug){
                 updateErrorMarker();
@@ -25,6 +26,7 @@ $(document).ready(function(){
                 findImgLink();
                 findSpanWarning();
                 findSriptsDate();
+                findImgDouble();
             }
             else{
                 removeAllDebug()
@@ -163,6 +165,12 @@ $(document).ready(function(){
             var scroll = $(window).scrollTop();
             $('#oi-toolbar #back-info').hide(300)
         });
+
+        // Поиск и добавление рамки для дублей картинок
+        function findImgDouble(){
+            let imgDouble = $('img.'+doubleImgStyle)
+            imgDouble.addClass(debugClass)
+        }
 
         // Включение тулбара клавишами
         $(document).keyup(function(e) {
