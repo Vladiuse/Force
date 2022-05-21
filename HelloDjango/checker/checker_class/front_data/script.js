@@ -6,8 +6,8 @@
             return this;
             };
 
-        const queryString = window.location.search;
-        isDebug = false;
+        let toogleTime = 300;
+        let isDebug = false;
         let errorCount = 0;
         let debugClass = '__debug';
         let debugMsgClass = '__debug_msg';
@@ -22,7 +22,7 @@
         let imgBoubleLen = 0;
         function onOffDebug(){
             if (isDebug){
-                updateErrorMarker();
+                // updateErrorMarker();
                 findAlla();
                 FormSelectBebug();
                 formInputType();
@@ -80,7 +80,7 @@
                 let msg = getMsg()
                 msg.text('No select')
                 $(this).append(msg)
-                plusError()
+                // plusError()
             })
 
         }
@@ -95,7 +95,7 @@
             })
             console.log(inputsNoTel)
             inputsNoTel.addClass(fromInputNotelClass)
-            if (inputsNoTel.length != 0){plusError();}
+            // if (inputsNoTel.length != 0){plusError();}
         }
 
 
@@ -144,8 +144,10 @@
         }
 
         // показать\скрыть тулбар
-        $('#oi-toolbar .io-main').click(function(){
-            $('#oi-toolbar #back-info').toggle(300)
+        $('#oi-toolbar .header').click(function(){
+            $('#oi-toolbar .close').toggle(toogleTime)
+            $('#oi-toolbar').toggleClass('__close')
+            // $('#oi-toolbar #back-info').toggle(300)
         })
                 
         // закрытие тулбара при скроле
