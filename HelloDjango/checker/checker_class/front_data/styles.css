@@ -57,7 +57,7 @@
         font-weight: bold;
     }
 
-    #oi-toolbar .container{
+    #oi-toolbar .container-toolbar{
         display: flex
     }
     #oi-toolbar .error-counter{

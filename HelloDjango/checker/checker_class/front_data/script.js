@@ -15,6 +15,10 @@
         let fromInputNotelClass = '__debug_no_tel';
         let debugScritpDate = '__debug_script_date'
         let doubleImgStyle = '__debug_double'
+
+
+        let imgBoubleCounter = 0;
+        let imgBoubleLen = 0;
         function onOffDebug(){
             if (isDebug){
                 updateErrorMarker();
@@ -171,6 +175,21 @@
             let imgDouble = $('img.'+doubleImgStyle)
             imgDouble.addClass(debugClass)
         }
+
+        $('#back-info img').click(function(){
+        // let imgBoubleCounter = 0;
+        // let imgBoubleLen = 0;
+            let src = $(this).attr('src')
+            let imgs = $('img.'+doubleImgStyle).filter(function(){
+                if ($(this).attr('src') == src){return true}
+            })
+            imgBoubleLen = imgs.length
+            console.log(imgBoubleCounter, imgBoubleLen)
+            imgs.get(imgBoubleCounter).scrollIntoView();
+            imgBoubleCounter ++
+            if (imgBoubleCounter  >= imgBoubleLen) {imgBoubleCounter=0; console.log('Сброс счетчика')}
+        })
+
 
         // Включение тулбара клавишами
         $(document).keyup(function(e) {

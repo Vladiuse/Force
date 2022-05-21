@@ -17,7 +17,6 @@ def check_url(request):
     if res.status_code != 200:
         return HttpResponse(f'Error: res.status_code != 200, Ссылка не работает!')
     text = res.text
-    print('css/A.bmmfp.css.pagespeed.cf' in text, 'xxx')
     t_fix = TextFixxer(text)
     t_fix.process()
     text = t_fix.text
