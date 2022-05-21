@@ -15,6 +15,7 @@
         let fromInputNotelClass = '__debug_no_tel';
         let debugScritpDate = '__debug_script_date'
         let doubleImgStyle = '__debug_double'
+        let lastDoubleScr = ''
 
 
         let imgBoubleCounter = 0;
@@ -146,6 +147,13 @@
         $('#oi-toolbar .io-main').click(function(){
             $('#oi-toolbar #back-info').toggle(300)
         })
+                
+        // закрытие тулбара при скроле
+        // $(window).scroll(function (event) {
+        //     var scroll = $(window).scrollTop();
+        //     let toolbar = $('#oi-toolbar #back-info')
+        //     console.log(toolbar.css('display'))
+        // });
 
         // Поиск элементов с script внутри (возможно это скрипт даты)
         function findSriptsDate(){
@@ -163,12 +171,6 @@
             console.log(url)
             window.open(url, '_blank').focus();
         })
-        
-        // закрытие тулбара при скроле
-        $(window).scroll(function (event) {
-            var scroll = $(window).scrollTop();
-            $('#oi-toolbar #back-info').hide(300)
-        });
 
         // Поиск и добавление рамки для дублей картинок
         function findImgDouble(){
@@ -176,16 +178,23 @@
             imgDouble.addClass(debugClass)
         }
 
+        // Скролл по дублям картинок
         $('#back-info img').click(function(){
         // let imgBoubleCounter = 0;
         // let imgBoubleLen = 0;
+            $('img.__focus_img').removeClass('__focus_img')
             let src = $(this).attr('src')
+            if (src != lastDoubleScr){imgBoubleCounter = 0}
+            lastDoubleScr = src
             let imgs = $('img.'+doubleImgStyle).filter(function(){
                 if ($(this).attr('src') == src){return true}
             })
             imgBoubleLen = imgs.length
             console.log(imgBoubleCounter, imgBoubleLen)
-            imgs.get(imgBoubleCounter).scrollIntoView();
+            imgs.get(imgBoubleCounter).scrollIntoView({block: "center", behavior: "smooth"});
+
+            $(imgs.get(imgBoubleCounter)).addClass('__focus_img') // xxx
+            
             imgBoubleCounter ++
             if (imgBoubleCounter  >= imgBoubleLen) {imgBoubleCounter=0; console.log('Сброс счетчика')}
         })

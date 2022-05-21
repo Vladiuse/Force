@@ -2,7 +2,7 @@
         position: fixed;
         top: 50px;
         left: 50px;
-        width: 200px;
+        width: 200px !important;
         background-color: #e7e6d3;
         z-index: 99000;
         padding: 5px;
@@ -36,7 +36,17 @@
         border: 2px solid green;
     }
     img.__debug.__debug_double{
-        border: 3px dashed red !important;
+        border: 1px dashed red !important;
+    }
+
+    img.__debug.__debug_double.__focus_img{
+        /* border: 5px solid rgb(251, 255, 0) !important; */
+        transition: 1s;
+        /* box-shadow: 0px 0px 12px rgb(24, 104, 9); */
+        -webkit-box-shadow: 0px 0px 5px 10px rgba(255, 0, 0, 0.55);
+        -moz-box-shadow: 0px 0px 5px 10px rgba(255, 0, 0, 0.55);
+        box-shadow: 0px 0px 5px 10px rgba(255, 0, 0, 0.55);        
+        border: 2px solid rgb(32, 212, 32) !important;
     }
 
     /* Даты с Бэка */
