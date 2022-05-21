@@ -38,13 +38,17 @@
     img.__debug.__debug_double{
         border: 3px dashed red !important;
     }
-    span.back-warning.__debug{
+
+    /* Даты с Бэка */
+    span.__debug.__back-date{
         background-color: aquamarine;
     }
-    span.back-warning.__debug.error{
+    span.__debug.__back-date.__debug_date_error{
         background-color: red;
         font-weight: bold;
     }
+
+
     .__debug_script_date{
         background-color: #ccffcb;
         border: 2px dashed #538052;
@@ -84,8 +88,8 @@
         justify-content: center;
     }
     #oi-toolbar #back-info img{
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
     }
     #oi-toolbar .original-link{
         display: flex;

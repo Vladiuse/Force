@@ -5,25 +5,18 @@ import requests as req
 from django.conf import settings
 
 
-SPAN_CLASS_BACK = 'back-warning '
-SPAN_ERROR = 'error'
+SPAN_CLASS_BACK = '__back-date '
+SPAN_DATE_ERROR = ' __debug_date_error'
 TOOLBAR_HTML_FILE = str(settings.BASE_DIR) + '/checker/checker_class/front_data/block.html'
 TOOLBAR_STYLES_FILE = str(settings.BASE_DIR) + '/checker/checker_class/front_data/styles.css'
 TOOLBAR_JS_FILE = str(settings.BASE_DIR) + '/checker/checker_class/front_data/script.js'
 
 def is_date_correct(date):
     """Проверка коректности даты"""
-    date = date.replace('\\', '.')
-    date = date.replace('//', '.')
-    try:
-        days, mounth, year = date.split('.')
-        if int(days) not in range(1, 32):
+    for char in '-/\\':
+        if char in date:
             return False
-        if int(mounth) not in range(1, 13):
-            return False
-        return True
-    except ValueError:
-        return False
+    return True
 
 
 def find_img_double(soup) -> set:
@@ -54,32 +47,58 @@ class TextFixxer:
         self.text = text
 
     def process(self):
-        """Главная функция"""
-        # text = re.sub(r'\D19\d\d\D|\D20\d\d\D', TextFixxer.wrap_years, text)
-        # text = re.sub(r'\D\d{1,2}[./\\]\d{1,2}.\d{2,4}\D', TextFixxer.wrap_dates, text)
-        self.text = re.sub(r'>\D*(19|20)\d{2}\D*<', self.wrap_years, self.text)
-        self.text = re.sub(r'>\D*\d{1,2}[./\\]\d{1,2}.\d{2,4}\D*<', self.wrap_dates, self.text)
+        self.add_test_dates()
+        # старая '>.*(\d{1,2}[.\\/-]\d{1,2}[.\\/-]\d{2,4}).*?<|>.*(\d\d\d\d).*?<'
+        self.text = re.sub(r'[<>\s]{1}(\d{1,2}[.\\/-]\d{1,2}[.\\/-]\d{2,4}|\d\d\d\d)[<>.\s]{1}', self.wrap_dates, self.text)
 
     @staticmethod
-    def wrap_years(string):
-        """Поиск дат 19хх 20хх и оборачивание в тэг и класса"""
-        _class = SPAN_CLASS_BACK
-        res = f'<span class="{SPAN_CLASS_BACK}">{string.group(0)}</span>'
+    def span_wrap(date_s):
+        date = date_s.group(0)
+        span_class = SPAN_CLASS_BACK
+        if not is_date_correct(date):
+            span_class += SPAN_DATE_ERROR
+        res = f'<span class="{span_class}" >{date}</span>'
         return res
 
     @staticmethod
     def wrap_dates(string):
         """Поиск дат хх.хх.хххх и оборачивание в тэг"""
-        date = string.group(0)
-        _class = SPAN_CLASS_BACK
-        print(date, '/' in date)
-        if '\\' in date or '/' in date:
-            _class += SPAN_ERROR
-            print('add', )
-        if not is_date_correct(date):
-            _class += ' error' if not _class.endswith(SPAN_ERROR) else ''
-        res = f'<span class="{_class}">{string.group(0)}</span>'
-        return res
+        date_string = string.group(0)
+        print('*'* 50)
+        print(date_string, 'date_string')
+        date = re.sub(r'\d{1,2}[.\\/-]\d{1,2}[.\\/-]\d{2,4}|\d\d\d\d', TextFixxer.span_wrap, date_string)
+        # print(len(date), 'date')
+        return date
+
+    def add_test_dates(self):
+        dates = '<p>01.10.20</p><p>1.10.20</p><p>01.1.20</p><p>1.1.20</p><p>01.10.2020</p><p>01-10-20</p><p>1/10/20</p><p>01\\1\\20</p><p>1-1.20</p><p>01\\10/2020</p>'
+        body_pos = self.text.find('</body>')
+        self.text = self.text[:body_pos] + dates + self.text[body_pos:]
+
+
+    # def process(self):
+    #     """Главная функция"""
+    #     self.text = re.sub(r'>.*\b(19|20\d\d)\b.*?<', self.wrap_years, self.text)
+    #     self.text = re.sub(r'>.*\b([-.\d]\d[./\\]\d{1,2}[./\\]\d{2,4})\b.*?<', self.wrap_dates, self.text)
+    #
+    # @staticmethod
+    # def wrap_years(string):
+    #     """Поиск дат 19хх 20хх и оборачивание в тэг и класса"""
+    #     _class = SPAN_CLASS_BACK
+    #     res = f'<span class="{SPAN_CLASS_BACK}">{string.group(0)}</span>'
+    #     return res
+    #
+    # @staticmethod
+    # def wrap_dates(string):
+    #     """Поиск дат хх.хх.хххх и оборачивание в тэг"""
+    #     date = string.group(0)
+    #     _class = SPAN_CLASS_BACK
+    #     if '\\' in date or '/' in date:
+    #         _class += SPAN_ERROR
+    #     if not is_date_correct(date):
+    #         _class += ' error' if not _class.endswith(SPAN_ERROR) else ''
+    #     res = f'<span class="{_class}">{string.group(0)}</span>'
+    #     return res
 
 
 class DomFixxer:
@@ -98,6 +117,7 @@ class DomFixxer:
         self.add_checked_url_in_toolbar()
         self.add_base_tag()
         self.fix_style_link()
+        # self.add_test_dates()
 
         self.add_html()
         self.add_css()
@@ -147,22 +167,24 @@ class DomFixxer:
         #TODO Проверить работу на картинках без класса (по идее вылетит - а должет добавить класс)
         css_tyle = ' __debug_double'
         double_imgs_src = find_img_double(self.soup)
-        print(double_imgs_src, 'double_imgs_src')
         for src in double_imgs_src:
             imgs = self.soup.find_all('img')
             for img in imgs:
                 try:
                     if img['src'] == src:
-                        print('img', img)
-                        print()
                         img['class'] = ' '.join(img['class']) + css_tyle
                 except KeyError:
                     pass
 
-
-
     def add_checked_url_in_toolbar(self):
         self.toolbar.find(id="original-link")['data-href'] = self.url
+
+    # def add_test_dates(self):
+    #     dates = ['01.10.20', '1.10.20','01.1.20','1.1.20','01.10.2020','01-10-20', '1/10/20','01\\1\\20','1-1.20','01\\10//2020',]
+    #     for date in dates:
+    #         new_tag = self.soup.new_tag('p')
+    #         new_tag.string = date
+    #         self.soup.html.body.append(new_tag)
 
 
     def fix_all_tags(self):

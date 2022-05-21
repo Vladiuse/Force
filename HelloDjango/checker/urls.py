@@ -4,6 +4,6 @@ app_name = 'checker'
 
 urlpatterns = [
     path('', views.index),
-    path('check_url/', views.check_url, name='check_url'),
+    path('/check_url', views.check_url, name='check_url'),
     path('fix_ready_body/', views.check_url)
 ]

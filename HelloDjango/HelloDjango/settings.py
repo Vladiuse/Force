@@ -143,17 +143,17 @@ DATABASES = {
 # }
 
 # for MySql database remote
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'vladiuse_df',
-#         'USER': 'vladiuse_df',
-#         'PASSWORD': get_secret('vladiuse_df'),
-#         'HOST': 'vladiuse.beget.tech',
-#         'PORT': '3306',
-#
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vladiuse_df',
+        'USER': 'vladiuse_df',
+        'PASSWORD': get_secret('vladiuse_df'),
+        'HOST': 'vladiuse.beget.tech',
+        'PORT': '3306',
+
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
