@@ -1,10 +1,4 @@
 // $(document).ready(function(){
-    $.fn.removeClassStartingWith = function (filter) {
-        $(this).removeClass(function (index, className) {
-            return (className.match(new RegExp("\\S*" + filter + "\\S*", 'g')) || []).join(' ')
-                });
-            return this;
-            };
 
         let toogleTime = 300;
         let isDebug = false;
@@ -17,9 +11,18 @@
         let doubleImgStyle = '__debug_double'
         let lastDoubleScr = ''
 
-
         let imgBoubleCounter = 0;
         let imgBoubleLen = 0;
+
+        $.fn.removeClassStartingWith = function (filter) {
+        $(this).removeClass(function (index, className) {
+            return (className.match(new RegExp("\\S*" + filter + "\\S*", 'g')) || []).join(' ')
+            });
+        return this;
+        };
+
+
+        // MAIN
         function onOffDebug(){
             if (isDebug){
                 // updateErrorMarker();
@@ -38,12 +41,16 @@
             }
 
         }
+
+        // Получить обьект сообщения о ошибке
         function getMsg(){
             let msg = $('<span></span>')
             msg.addClass(debugMsgClass)
             console.log(msg, 'getMsg')
             return msg
         }
+
+        // Удаление всех классов и элементов debug
         function removeAllDebug(){
             let forms = $('form.'+formNoSelectClass)
             forms.removeClass(formNoSelectClass)
@@ -57,15 +64,16 @@
                 }
             }
             removeDebugMsg()
-
-
         }
+
+        // удаление сообщений о ошибках с лэндинга
         function removeDebugMsg(){
             let msgs = $('.' + debugMsgClass)
             console.log(msgs.length, 'msgs')
             msgs.remove()
         }
 
+        // Выбор форм с ошибками селекта(его отсутствия)
         function FormSelectBebug(){
             let forms = $('form')
             let formsNoSelect = forms.filter(function(){
@@ -82,9 +90,9 @@
                 $(this).append(msg)
                 // plusError()
             })
-
         }
 
+        // Поиск инпутов с некоректным атрибутом type
         function formInputType(){
             let inputs = $('form input[name=phone]')
             console.log(inputs)
@@ -98,33 +106,42 @@
             // if (inputsNoTel.length != 0){plusError();}
         }
 
-
+        // Выборка всех ссылок
         function findAlla(){
             // поиск ссылок
             let links = $('a')
             links.addClass(debugClass)
         }
+
+        // Выборка всех цен (по классу)
         function findPrice(){
             let oldPrice = $('.price_land_s4')
             let newPrice = $('.price_land_s1')
             oldPrice.addClass(debugClass)
             newPrice.addClass(debugClass)
-
         }
+
+        // Выборка всех валют (по классу)
         function findCurrency(){
             let currencys = $('.price_land_curr')
             currencys.addClass(debugClass)
         }
 
+        // Выборка картинок внутри ссылок
         function findImgLink(){
             let imgs = $('a img')
             imgs.addClass(debugClass)
+            imgs.parent().removeClass(debugClass)
 
         }
+
+        // Поиск меток с бэка
         function findSpanWarning(){
             let elems = $('span.__back-date')
             elems.addClass(debugClass)
         }
+
+        // УДалить!
         function plusError(){
             errorCount ++
             updateErrorMarker()
@@ -149,7 +166,7 @@
             $('#oi-toolbar').toggleClass('__close')
             // $('#oi-toolbar #back-info').toggle(300)
         })
-                
+
         // закрытие тулбара при скроле
         // $(window).scroll(function (event) {
         //     var scroll = $(window).scrollTop();
@@ -196,7 +213,7 @@
             imgs.get(imgBoubleCounter).scrollIntoView({block: "center", behavior: "smooth"});
 
             $(imgs.get(imgBoubleCounter)).addClass('__focus_img') // xxx
-            
+
             imgBoubleCounter ++
             if (imgBoubleCounter  >= imgBoubleLen) {imgBoubleCounter=0; console.log('Сброс счетчика')}
         })
