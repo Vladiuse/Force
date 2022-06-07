@@ -508,7 +508,11 @@
         card.find('.language').attr('data-site-lang', languageID)
         card.find('img').attr('src', cardImage)
         card.attr('id', card_id)
-        card.find('.site_url').attr('href', acrhiveUrl + dirPath)
+        if (dirPath.startsWith('http')){
+          card.find('.site_url').attr('href', dirPath)
+        } else {
+          card.find('.site_url').attr('href', acrhiveUrl + dirPath)
+        }
         if (isCategorysLoad == true){card.find('.site-add-to-folder').show()}
         if (isFolderOpen == true){card.find('.site-drop-from-folder').show()}
 
