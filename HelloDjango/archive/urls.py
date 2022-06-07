@@ -11,5 +11,6 @@ urlpatterns = [
     path('/add_cataloge', views.add_cataloge),  
     path('/add_site_to_cataloge', views.add_site_to_cataloge),
     path('/remove_cataloge', views.remove_cataloge),
+    path('/add_remote_site', views.add_remote_site)
     # path('/test', views.test),
 ]

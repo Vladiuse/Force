@@ -6,8 +6,8 @@ import requests as req
 
 
 def load_screenshot(url, path_to_save, image_name):
-    api_load_image(url, path_to_save,image_name)
-    # load_image_selenium(url, path_to_save, image_name)
+    # api_load_image(url, path_to_save,image_name)
+    load_image_selenium(url, path_to_save, image_name)
 
 
 def load_image_selenium(url, path_to_save, image_name):
@@ -22,6 +22,7 @@ def load_image_selenium(url, path_to_save, image_name):
         browser.get_screenshot_as_file(path_to_save + image_name)
         browser.quit()
     except BaseException as error:
+        print(error)
         with open('./logs/browser.txt', 'a') as file:
             msg = f'{datetime.datetime.now()} - {error}'
             if not msg.endswith('\n'):

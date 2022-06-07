@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Site, SiteCategoty, Languege, Cataloge, Tag, Test
+from .models import Site, SiteCategoty, Languege, Cataloge, Tag, SiteLocal, Siteremote
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .func import transform_list_object
@@ -12,11 +12,9 @@ import os
 
 @login_required
 def index(request):
-    # return HttpResponse(f'{settings.MEDIA_ROOT}')
-    # categorys = SiteCategoty.objects.all()
-    s = Site()
+    s = SiteLocal()
     s.update_sites_models()
-    archive_url = Site.SITE_DOMAIN
+    archive_url = SiteLocal.SITE_DOMAIN
     current_domain = str(request.get_host())
     tags = Tag.objects.all()
     if current_domain.startswith('127'):
@@ -237,6 +235,44 @@ def remove_cataloge(request):
         }
         return JsonResponse(answer, safe=False)
 
+@login_required
+@csrf_exempt
+def add_remote_site(request):
+    """Добавление удаленного сайта"""
+    if request.method == 'POST':
+        try:
+            site_name=request.POST['site-name']
+            site_desc = request.POST['site-desc']
+            site_url = request.POST['site-url']
+            lang_id = request.POST['site-lang']
+            lang = Languege.objects.get(pk=lang_id)
+            site_remote = Siteremote(
+                name=site_name, 
+                description=site_desc,
+                languege=lang,
+                path=site_url,
+
+            )
+            site_remote.save()
+            site_remote.load_screenshot()
+            site_remote.fix_image_size()
+            answer = {
+                'success': True,
+                'site': site_remote.pk,
+            }
+            return JsonResponse(answer, safe=False)
+        except BaseException as error:
+            answer = {
+                'success': False,
+                'error': str(error)
+            }
+            return JsonResponse(answer, safe=False)
+    else:
+        answer = {
+            'success': False,
+            'error': 'Wrong method'
+        }
+        return JsonResponse(answer, safe=False)
 
 # def test(request):
 #     with open('./script.js') as file:

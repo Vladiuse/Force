@@ -80,7 +80,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Настройки сайта</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -95,10 +95,6 @@
           </div>
           <label for="message-text" class="col-form-label">Язык:</label>
           <select class="form-select languege" aria-label="Default select example">
-            <!-- <option selected>Open this select menu</option> -->
-            <!-- <option value="1" selected>One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option> -->
           </select>
         </form>
       </div>
@@ -152,20 +148,12 @@
       </div>
       <div class="modal-body">
         <div class="list-group">
-          <!-- <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-            The current link item
-          </a> -->
-          <!-- <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-          <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-          <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-          <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</a> -->
         </div>
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary send-data">Добавить</button> -->
       </div>
     </div>
   </div>
@@ -192,6 +180,48 @@
 </div>
 <!-- Модалка Удаления папки -->
 
+<!-- Модалка добавления Удаленного сайта -->
+<div class="modal fade needs-validation" id="addRemoteSiteModal" tabindex="-1" aria-labelledby="addRemoteSiteModal" aria-hidden="true" data-card-id="" novalidate>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Добавить сайт по ссылке</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3 site-name">
+            <label for="recipient-name" class="col-form-label">Название:</label>
+            <input type="text" class="form-control" id="recipient-name" name="site-name" required>
+            <div class="invalid-feedback">
+              Укажите название
+            </div>
+          </div>
+          <div class="mb-3 site-name">
+            <label for="recipient-link" class="col-form-label">Ссылка:</label>
+            <input type="url" class="form-control" id="recipient-link" name="site-url" required>
+            <div class="invalid-feedback">
+              Укажите ссылку
+            </div>
+          </div>
+          <div class="mb-3 site-description">
+            <label for="message-text" class="col-form-label">Описание:</label>
+            <textarea class="form-control" id="message-text" name="site-desc"></textarea>
+          </div>
+          <label for="message-text" class="col-form-label">Язык:</label>
+          <select class="form-select languege" aria-label="Default select example" name="site-lang">
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary send-data">Добавить Сайт</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Модалка добавления Удаленного сайта -->
+
 
 
   <!-- Блоки для копирования -->
@@ -205,7 +235,7 @@
             <img src="media/{{site.image}}" class="card-img-top" alt="...">
         </a>
         <div class="card-body">
-          <h5 class="card-title">{{site.dir_path}}</h5>
+          <h5 class="card-title">{{site.path}}</h5>
           <footer class="blockquote-footer description">site description</footer>
 
           <!-- <p class="card-text category">Категория: {{site.category}}</p> -->
@@ -237,7 +267,7 @@
         
         </div>
         <div class="card-footer">
-          <small class="text-muted dir_path">Last updated 3 mins ago</small>
+          <small class="text-muted path">Last updated 3 mins ago</small>
         </div>
       </div>
     </div>
@@ -248,7 +278,7 @@
     <div class="col cataloge-card" id="cataloge-exsample">
       <div class="card h-100">
         <a href="#" class="cataloge_url" target="_blank">
-            <img src="media/folder_d82hd31d.png" class="card-img-top" alt="..." >
+            <img src="media/tech/folder_d82hd31d.png" class="card-img-top" alt="..." >
         </a>
         <div class="card-body">
           <h5 class="card-title">Название Папки</h5>
@@ -279,12 +309,14 @@
         
         </div>
         <div class="card-footer">
-          <small class="text-muted dir_path">Last updated 3 mins ago</small>
+          <small class="text-muted path">Last updated 3 mins ago</small>
         </div>
       </div>
     </div>
       <!-- Карточка Каталога -->
   </div>
+
+
 
 <div class="main-wrapper">
   {% for tag in tags %}
@@ -299,6 +331,8 @@
   <i class="fas fa-flask" aria-hidden="true"></i>
   <i class="fas fa-trash" aria-hidden="true"></i>
   <i class="fas fa-folder" aria-hidden="true"></i>
+  <br>
+  <button class="btn btn-secondary" id="addRemoteSite" data-bs-toggle="modal" data-bs-target="#addRemoteSiteModal">Добавить сайт</button>
  <div class="catogorys-bar">
     <div class="categorys">
       <button class="btn btn-primary" data-cat-id="null">
@@ -359,9 +393,20 @@
         }
       })
 
+      function updateSiteCatInObj(site_id, new_cat_id){
+        for (pos in sites){
+          site = sites[pos]
+          if (site['id'] == site_id){
+            site['category_id'] = new_cat_id
+            break
+          }
+        }
+      }
+
       // при выборе новой категории для сайта
       $('body').on('click', 'ul a', function(){
         newCatName = $(this).text()
+        newCatId = $(this).attr('data-cat-id')
         let cardParents = $(this).parentsUntil('#cards')
         let cardId = cardParents.filter('.col').attr('id')
         let cardCat = $(this).parent().siblings()
@@ -375,9 +420,13 @@
           console.log(response)
           if (response['success'] == true){
             cardCat.text(newCatName)
+            updateSiteCatInObj(cardId,newCatId)
+            $('#cards').empty()
+            loadCataloges(curentCategoryID);
+            LoadCardS(curentCategoryID);
           }
         })
-        updateSiteCat(cardId, catId)
+        // updateSiteCat(cardId, catId)
       })
 
         // получить название категории по id
@@ -447,12 +496,12 @@
         if (description == '') {description='Нет описания'}
         let languageID = cardData['languege_id']
         if (languageID != null){languege = langueges[languageID]['full']} else{languege="Язык не выбран"}
-        let dirPath = cardData['dir_path']
+        let dirPath = cardData['path']
         let categoryId = cardData['category_id']
         let category = getCatNameById(categoryId)
         let cardImage = 'media/' + cardData['image']
         card.find('h5').text(cardName)
-        card.find('.dir_path').text('Путь к папке: ' + dirPath)
+        card.find('.path').text('Путь к папке: ' + dirPath)
         card.find('.description').text(description)
         card.find('.dropdown a').text(category) 
         card.find('.language').text('Язык: ' + languege)
@@ -610,8 +659,10 @@
       })
 
       // добавить селект с языками в модалку сайта
-      function addLangMadal(cardLangID){
+      function addLangMadal(cardLangID, modalId){
+
         let modal = $('#exampleModal')
+        if (modalId != undefined){modal = $('#'+ modalId)}
         let selectLang = modal.find('select.languege')
         selectLang.empty()
         for (pos in langueges){
@@ -844,6 +895,38 @@
           }
         }
       }
+      
+      $('#addRemoteSite').click(function(){
+        addLangMadal(null, 'addRemoteSiteModal')
+      })
+      $('#addRemoteSiteModal .send-data').click(function(){
+        let form = $('#addRemoteSiteModal form')[0]
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+          console.log('NOt valid')
+        } else {
+          var data = {};
+        // переберём все элементы input, textarea и select формы с id="myForm "
+        $('#addRemoteSiteModal form').find ('input, textarea, select').each(function() {
+          // добавим новое свойство к объекту $data
+          // имя свойства – значение атрибута name элемента
+          // значение свойства – значение свойство value элемента
+          data[this.name] = $(this).val();
+        });
+        console.log(data)
+        ADD_SITE_URL = 'add_remote_site'
+        url = SITE_URL + ADD_SITE_URL
+        $.post(url, data, function(response){
+          console.log(response)
+          // $('#cards').empty()
+          //   loadCataloges(curentCategoryID);
+          //   LoadCardS(curentCategoryID);
+        })
+        }
+        form.classList.add('was-validated')
+        
+      })
 
 
       // заглушить ссылки
