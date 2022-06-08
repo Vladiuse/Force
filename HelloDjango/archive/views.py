@@ -34,7 +34,7 @@ def index(request):
 def get_sites_n_categorys(request):
     categorys = SiteCategoty.objects.values()
     sites = Site.objects.order_by('name').values()
-    langueges = Languege.objects.filter(is_active=True).values()
+    langueges = Languege.objects.values()
     cataloges = Cataloge.objects.all().values()
     tags = Tag.objects.all().values()
     answer = {

@@ -676,7 +676,8 @@
           option.val(lang['id'])
           // console.log(lang['id'] == cardLangID, lang['full'],cardLang)
           if (lang['id'] == cardLangID) {option.attr('selected', 'selected')}
-          selectLang.append(option)
+          if (lang['is_active']) {selectLang.append(option)}
+          // selectLang.append(option)
         }
       }
 
