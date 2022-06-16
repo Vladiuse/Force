@@ -213,9 +213,15 @@
           </select>
         </form>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary send-data">Добавить Сайт</button>
+        <button type="button" class="btn btn-primary send-data">Добавить Сайт
+        </button>
+        <button class="btn btn-primary load-process" type="button" disabled style="display:none;">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
       </div>
     </div>
   </div>
@@ -922,11 +928,19 @@
         console.log(data)
         ADD_SITE_URL = 'add_remote_site'
         url = SITE_URL + ADD_SITE_URL
+        $('#addRemoteSiteModal .send-data').hide()
+        $('#addRemoteSiteModal .load-process').show()
         $.post(url, data, function(response){
           console.log(response)
-          // $('#cards').empty()
-          //   loadCataloges(curentCategoryID);
-          //   LoadCardS(curentCategoryID);
+          if (response['success']){
+            sites.push(response['site'])
+          }
+          $('#addRemoteSiteModal').modal('toggle')
+          $('#cards').empty()
+          loadCataloges(curentCategoryID);
+          LoadCardS(curentCategoryID);
+          $('#addRemoteSiteModal .send-data').show()
+          $('#addRemoteSiteModal .load-process').hide()
         })
         }
         form.classList.add('was-validated')

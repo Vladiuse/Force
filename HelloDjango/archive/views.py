@@ -256,9 +256,20 @@ def add_remote_site(request):
             site_remote.save()
             site_remote.load_screenshot()
             site_remote.fix_image_size()
+            site = {
+                'id': site_remote.pk,
+                'name': site_name,
+                'description': site_desc,
+                'path': site_remote.path,
+                'tag_id': None,
+                'languege_id': lang_id,
+                'image': site_remote.image.name,
+                'category_id': None,
+                'cataloge_id': None,
+            }
             answer = {
                 'success': True,
-                'site': site_remote.pk,
+                'site': site,
             }
             return JsonResponse(answer, safe=False)
         except BaseException as error:
