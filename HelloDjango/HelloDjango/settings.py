@@ -45,7 +45,7 @@ SECRET_KEY = 'django-insecure-lzb2di94m4n32ogltf12736iorhyj1c3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['handy-fun.com', '127.0.0.1']
+ALLOWED_HOSTS = ['handy-fun.com', '127.0.0.1', 'small-mark.ru']
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
 
@@ -131,16 +131,16 @@ DATABASES = {
 }
 
 # for MySql local
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'test_user',
-#         'USER': 'test_user',
-#         'PASSWORD':  get_secret('vladiuse_df_local_bd'),
-#         'HOST': 'localhost',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_user',
+        'USER': 'test_user',
+        'PASSWORD':  get_secret('vladiuse_df_local_bd'),
+        'HOST': 'localhost',
 
-#     }
-# }
+    }
+}
 
 # for MySql database remote
 # DATABASES = {
