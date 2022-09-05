@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- BS CDN -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- STYLES -->
+    <link rel="stylesheet" href="{% static 'manual/css/bs_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'manual/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'manual/css/my_styles.css' %}">
+
+
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
+</head>
+<body id="manual">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+      </svg>
+    <div id="hot-links">
+    </div>
+    <nav>
+        <div class="side-scroll" id="left-side-scroll">
+            <div class="nav-logo">
+                <div class="home">
+                    <img src="{% static 'manual/img/logo.png' %}">
+                    <h2 style="font-family: 'Roboto Slab', serif;">IO Manual</h2>
+                </div>
+            </div>
+            <div class="menu-vertival">
+                {% for block in blocks %}
+                <p class="caption">{{block.name}}</p>
+                    {% for link in block.links %}
+                        {% if link.type %}
+                        <a href="/manual/{{link.path}}" class="">{{link.name}}</a>
+                        {% else %}
+                        <ul class="toctree-l">
+                            <li class="cataloge">
+                                <a href="" class="reference"> <button></button>{{link.name}}</a>
+                            </li>
+                            <ul>
+                                {% for sub_link in  link.sub %}
+                                <li class="on"><a class="" href="/manual/{{sub_link.path}}">{{sub_link.name}}</a></li>
+                                {% endfor%}
+                            </ul>
+                        </ul>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </nav>
+    <section class="main-content">
+        <div class="rst-content">
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+                <div class="space-footer"></div>
+          </div>
+        </div>
+    </section>
+    <script>
+        let url = window.location.pathname;
+        $('a.reference').click(function(e){
+            e.preventDefault()
+        })
+
+        // открытие подкатегорий
+        $('.toctree-l>li').click(function(){
+            if ($(this).hasClass('current')){
+                $('.toctree-l>li').removeClass('current')
+                $(this).removeClass('current')
+            } else{
+                $('.toctree-l>li').removeClass('current')
+                $(this).addClass('current')
+            }
+            
+        })
+        // ссылка на главную страницу
+        $('.home').click(function(){
+            url = '{% url 'manual:index' %}'
+            window.location.href = url
+        })
+
+
+        openCurMenu()
+        // gjrfpfnm ds,hfyysq geyrn vty.
+        function openCurMenu(){
+            let a = $(`a[href="${url}"]`);
+
+            a.addClass('active')
+            let leftBar = document.getElementById('left-side-scroll')
+        
+            parent = a.parent()
+            if (parent.hasClass('on')){
+                let ul = a.parentsUntil('.menu-vertival')
+                ul.find('li.cataloge').addClass('current')
+            }
+            // скролл для текущего пунтка меню сйд-бара
+            let to_srool = a.position().top
+            if (screen.height *0.8 < to_srool) {
+                leftBar.scrollBy({
+                top: to_srool,
+                left: 0,
+                behavior: "smooth",
+                    })
+            }                
+        }
+            
+        addHotLinks()
+        // Добавление горячих ссылок
+        function addHotLinks(){
+            let counter = 0;
+            let hh = $('.main-content .content').find('h2, h3')
+            console.log(hh.length)
+            // if (hh.length >1){$('#hot-links').show()}
+            hh.each(function(){   
+                // if (counter !=0){
+                //     console.log($(this).text(), $(this).parent())
+                    
+                    
+                // }
+                $('#hot-links').show()
+                if ($(this).parent().hasClass('content') || true){
+                        $(this).attr('id', 'hot-'+counter)
+                        let link = $('<a>')
+                        
+                        link.text($(this).text())
+                        link.attr('href', '#hot-'+counter)
+                        $('#hot-links').append(link)
+                    }
+                counter ++
+        })
+        }
+        $(document).ready(function(){
+            let ankorLink = $('<a>')
+            ankorLink.addClass('anchor-link')
+            $('.content h2, .content h3').append(ankorLink)
+        })
+        
+    </script>
+      <script>
+        //Скрипт для карточек описания новостей
+    function cardShowLang(card,lang){
+        card.find('p').hide()
+        card.find('p.'+lang).show()
+        card.find('.card-body img').hide()
+        card.find('.card-body img.'+lang).show()
+    }
+    $('.news_desc a.nav-link').click(function(e){
+        e.preventDefault()
+        let lang = $(this).attr('data-lang')
+        let card = $(this).closest('.card')
+        card.find('a').removeClass('active')
+        $(this).addClass('active')
+        cardShowLang(card,lang)
+    })
+    $('.news_desc a').click(function(e){
+        e.preventDefault()})
+    
+  </script>
+</body>
+</html>

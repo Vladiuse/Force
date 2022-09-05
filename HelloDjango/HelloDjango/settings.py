@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'office.apps.OfficeConfig',
     'archive.apps.ArchiveConfig',
     'checker.apps.CheckerConfig',
+    'manual.apps.ManualConfig',
 
     # extensions
     'django_extensions',
@@ -131,16 +132,16 @@ DATABASES = {
 }
 
 # for MySql local
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_user',
-        'USER': 'test_user',
-        'PASSWORD':  get_secret('vladiuse_df_local_bd'),
-        'HOST': 'localhost',
-
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'test_user',
+#         'USER': 'test_user',
+#         'PASSWORD':  get_secret('vladiuse_df_local_bd'),
+#         'HOST': 'localhost',
+#
+#     }
+# }
 
 # for MySql database remote
 # DATABASES = {

@@ -18,6 +18,9 @@ Pillow==9.1.0
 pycparser==2.21
 pyOpenSSL==22.0.0
 PySocks==1.7.1
+pytils==0.4.1
+pytz==2022.2.1
+PyYAML==6.0
 requests==2.27.1
 selenium==4.1.4
 sniffio==1.2.0
