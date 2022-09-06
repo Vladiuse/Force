@@ -132,16 +132,16 @@ DATABASES = {
 }
 
 # for MySql local
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'test_user',
-#         'USER': 'test_user',
-#         'PASSWORD':  get_secret('vladiuse_df_local_bd'),
-#         'HOST': 'localhost',
-#
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_user',
+        'USER': 'test_user',
+        'PASSWORD':  get_secret('vladiuse_df_local_bd'),
+        'HOST': 'localhost',
+
+    }
+}
 
 # for MySql database remote
 # DATABASES = {
@@ -188,7 +188,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/v/vladiuse/django-force/public_html/static'
+STATIC_ROOT = '/home/v/vladiuse/dr-force/public_html/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
