@@ -211,8 +211,9 @@ nav a[href][class]{
 
 
 figure{
-    margin: auto;
+    margin: 10px auto;
     text-align: center;
+    border: 2px solid #d5d5d5;
 }
 figure figcaption{
     font-style: italic;
