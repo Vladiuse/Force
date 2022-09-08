@@ -109,14 +109,6 @@ TEMPLATES = [
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# local sqlite
-# DATABASES = {
-#     #sqlite
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 # for MySql local server
@@ -131,17 +123,6 @@ DATABASES = {
     }
 }
 
-# for MySql local
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_user',
-        'USER': 'test_user',
-        'PASSWORD':  get_secret('vladiuse_df_local_bd'),
-        'HOST': 'localhost',
-
-    }
-}
 
 # for MySql database remote
 # DATABASES = {
