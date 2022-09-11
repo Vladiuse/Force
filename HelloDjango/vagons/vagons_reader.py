@@ -11,7 +11,7 @@ class Vagon:
         return self.vagon_data
 
     def find_vagon(self):
-        vagon = re.search('[A-z]{4}\s*\d{7}', self.vagon_data)
+        vagon = re.search('[A-zА-я]{4}\s*\d{7}', self.vagon_data)
         if vagon:
             vagon_id = vagon.group(0)
             return vagon_id
@@ -50,6 +50,9 @@ class VagReader:
 
     def sort_vagons(self, vagons: list) -> list:
         return sorted(vagons, key=lambda vagon: (vagon.id[:4], vagon.id[4:]))
+
+    def rus_vagons(self):
+        return list(filter(lambda vagon: vagon.is_has_ru_letters(), self.vagons))
 
     def __sub__(self, instance):
         unigue_ids = self.get_vagons_ids() - instance.get_vagons_ids()

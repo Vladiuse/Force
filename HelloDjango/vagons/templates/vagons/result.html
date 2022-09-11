@@ -11,13 +11,23 @@
                 <h3>Вагоны 1 (найдено {{vagons_1.vagons|length}})</h3>
             </div>
             <div class="col">
-                <h3>Вагоны 1 (найдено {{vagons_1.vagons|length}})</h3>
+
+            </div>
+            <div class="col">
+                <h3>Вагоны 2 (найдено {{vagons_2.vagons|length}})</h3>
             </div>
         </div>
+        <br>
         <div class="row files-data">
             <div class="col">
                 <h5>Уникальные вагоны в 1 ({{unique_vagons_1|length}})</h5>
                 <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_1%}{{row.vagon_data}}{%endfor%}</textarea>
+                {%if vagons_1.rus_vagons%}
+                <h6>с русскими буквами</h6>
+                {%for ru_vag in vagons_1.rus_vagons%}
+                <p>{{ru_vag}}</p>
+                {%endfor%}
+                {%endif%}
             </div>
              <div class="col">
                  <h5>Общие вагоны ({{jeneral_vagons|length}})</h5>
@@ -26,6 +36,12 @@
             <div class="col">
                 <h5>Уникальные вагоны в 2 ({{unique_vagons_2|length}})</h5>
                 <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_2%}{{row.vagon_data}}{%endfor%}</textarea>
+                  {%if vagons_2.rus_vagons%}
+                <h6>с русскими буквами</h6>
+                {%for ru_vag in vagons_2.rus_vagons%}
+                <p>{{ru_vag}}</p>
+                {%endfor%}
+                {%endif%}
             </div>
         </div>
         <div class="row">
