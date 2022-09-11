@@ -12,8 +12,6 @@ def index(requets):
         file_text_2 = requets.POST['file_text_2']
         vagons_1 = VagReader(file_text_1)
         vagons_2 = VagReader(file_text_2)
-        vagons_1.process()
-        vagons_2.process()
         content = {
             'vagons_1': vagons_1,
             'vagons_2': vagons_2,
