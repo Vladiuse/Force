@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('office.urls')),
     path('archive', include('archive.urls')),
     path('manual/', include('manual.urls')),
+    path('vagons/', include('vagons.urls')),
     path('checker', include('checker.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

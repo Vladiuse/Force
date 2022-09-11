@@ -1,0 +1,27 @@
+{% extends 'office/base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-wrapper">
+    <h1>Vagons</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col"><h3>Вагоны 1</h3></div>
+            <div class="col"><h3>Вагоны 2</h3></div>
+        </div>
+        <form method="POST">
+                     {% csrf_token %}
+            <div class="row files-data">
+                <div class="col"><textarea type="text" class="form-control" required name="file_text_1"></textarea></div>
+                <div class="col"><textarea type="text" class="form-control" required name="file_text_2"></textarea></div>
+            </div>
+            <button class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+
+</div>
+<style>
+.files-data textarea{
+    height: 700px;
+}
+</style>
+{%endblock%}

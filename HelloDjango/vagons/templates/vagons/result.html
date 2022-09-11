@@ -1,0 +1,41 @@
+{% extends 'office/base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-wrapper">
+    <h3>Вагоны 1 (найдено {{vagons_1.vagons_rows|length}})</h3>
+    <h3>Вагоны 2 (найдено {{vagons_2.vagons_rows|length}})</h3>
+    <div class="container-fluid">
+        <div class="row files-data">
+            <div class="col">
+                <h5>Уникальные вагоны в 1 ({{unique_vagons_1|length}})</h5>
+                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_1%}{{row|linebreaksbr}}{%endfor%}</textarea>
+            </div>
+             <div class="col">
+                 <h5>Общие вагоны ({{jeneral_vagons|length}})</h5>
+                <textarea type="text" class="form-control" disabled >{%for row in jeneral_vagons%}{{row}}{%endfor%}</textarea>
+            </div>
+            <div class="col">
+                <h5>Уникальные вагоны в 2 ({{unique_vagons_2|length}})</h5>
+                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_2%}{{row}}{%endfor%}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"><h5>Строки без вагонов</h5></div>
+        </div>
+        <div class="row files-data">
+            <div class="col">
+                <textarea type="text" class="form-control" disabled >{{vagons_1.get_no_vagon_rows}}</textarea>
+            </div>
+            <div class="col">
+                <textarea type="text" class="form-control" disabled >{{vagons_2.get_no_vagon_rows}}</textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+<style>
+.files-data textarea{
+    height: 300px;
+}
+</style>
+{%endblock%}
