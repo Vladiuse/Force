@@ -8,7 +8,7 @@
         <div class="row files-data">
             <div class="col">
                 <h5>Уникальные вагоны в 1 ({{unique_vagons_1|length}})</h5>
-                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_1%}{{row|linebreaksbr}}{%endfor%}</textarea>
+                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_1%}{{row}}{%endfor%}</textarea>
             </div>
              <div class="col">
                  <h5>Общие вагоны ({{jeneral_vagons|length}})</h5>
