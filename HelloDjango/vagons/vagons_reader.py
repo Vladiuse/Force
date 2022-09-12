@@ -8,10 +8,10 @@ class Vagon:
         self.id = self.find_vagon()
 
     def __str__(self):
-        return self.vagon_data
+        return self.id + '\n'
 
     def find_vagon(self):
-        vagon = re.search('[A-zА-я]{4}\s*\d{7}', self.vagon_data)
+        vagon = re.search('', self.vagon_data)
         if vagon:
             vagon_id = vagon.group(0)
             return vagon_id
