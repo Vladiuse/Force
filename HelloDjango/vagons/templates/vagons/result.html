@@ -8,44 +8,44 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h3>Вагоны 1 (найдено {{vagons_1.vagons|length}})</h3>
+                <h3>Контейнеры 1 (найдено {{vagons_1.vagons|length}}шт.)</h3>
             </div>
             <div class="col">
 
             </div>
             <div class="col">
-                <h3>Вагоны 2 (найдено {{vagons_2.vagons|length}})</h3>
+                <h3>Контейнеры 2 (найдено {{vagons_2.vagons|length}}шт.)</h3>
             </div>
         </div>
         <br>
         <div class="row files-data">
             <div class="col">
-                <h5>Уникальные вагоны в 1 ({{unique_vagons_1|length}})</h5>
-                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_1%}{{row}}{%endfor%}</textarea>
+                <h5>Уникальные контейнеры в 1 ({{unique_vagons_1|length}}шт.)</h5>
+                <textarea type="text" class="form-control" disabled >{%for vag in unique_vagons_1%}{{vag}}{%endfor%}</textarea>
                 {%if vagons_1.rus_vagons%}
                 <h6>с русскими буквами</h6>
                 {%for ru_vag in vagons_1.rus_vagons%}
-                <p>{{ru_vag}}</p>
+                <p>{{ru_vag.get_ru_warning_id|safe}}</p>
                 {%endfor%}
                 {%endif%}
             </div>
              <div class="col">
-                 <h5>Общие вагоны ({{jeneral_vagons|length}})</h5>
-                <textarea type="text" class="form-control" disabled >{%for row in jeneral_vagons%}{{row}}{%endfor%}</textarea>
+                 <h5>Общие контейнеры ({{jeneral_vagons|length}}шт.)</h5>
+                <textarea type="text" class="form-control" disabled >{%for vag in jeneral_vagons%}{{vag}}{%endfor%}</textarea>
             </div>
             <div class="col">
-                <h5>Уникальные вагоны в 2 ({{unique_vagons_2|length}})</h5>
-                <textarea type="text" class="form-control" disabled >{%for row in unique_vagons_2%}{{row}}{%endfor%}</textarea>
+                <h5>Уникальные контейнеры в 2 ({{unique_vagons_2|length}}шт.)</h5>
+                <textarea type="text" class="form-control" disabled >{%for vag in unique_vagons_2%}{{vag}}{%endfor%}</textarea>
                   {%if vagons_2.rus_vagons%}
                 <h6>с русскими буквами</h6>
                 {%for ru_vag in vagons_2.rus_vagons%}
-                <p>{{ru_vag}}</p>
+                <p>{{ru_vag.get_ru_warning_id|safe}}</p>
                 {%endfor%}
                 {%endif%}
             </div>
         </div>
         <div class="row">
-            <div class="col"><h5>Строки без вагонов</h5></div>
+            <div class="col"><h5>Строки без контейнеры</h5></div>
         </div>
         <div class="row files-data">
             <div class="col">
@@ -61,6 +61,9 @@
 <style>
 .files-data textarea{
     height: 300px;
+}
+p span{
+color: red;
 }
 </style>
 {%endblock%}

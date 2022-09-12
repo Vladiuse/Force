@@ -8,16 +8,27 @@ class Vagon:
         self.id = self.find_vagon()
 
     def __str__(self):
-        return self.id + '\n'
+        return str(self.id + '\n')
 
     def find_vagon(self):
-        vagon = re.search('', self.vagon_data)
+        vagon = re.search('[A-zА-я]{4}\s*\d{7}', self.vagon_data)
         if vagon:
             vagon_id = vagon.group(0)
             return vagon_id
 
     def is_has_ru_letters(self):
         return not bool(re.search('[A-z]{4}\s*\d{7}', self.id))
+
+    def get_ru_warning_id(self):
+        symbols = 'qwertyuiopasdfghjklzxcvbnm'.upper()
+        war_id = ''
+        for char in self.id[:4]:
+            if char not in symbols:
+                war_id += f'<span>{char}</span>'
+            else:
+                war_id += char
+        war_id += self.id[4:]
+        return war_id + '\n'
 
 
 class VagReader:
