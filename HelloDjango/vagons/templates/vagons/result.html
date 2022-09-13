@@ -90,7 +90,8 @@ color: red;
     $('#select').click(function(){
         if ($(this).is(':checked')){
             addData('only_id')
-        } else { addData('full')}
+            $('.form-switch label').text('Только номера')
+        } else { addData('full');$('.form-switch label').text('Данные целиком')}
     })
 
     function addData(key){
