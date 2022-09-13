@@ -2,13 +2,15 @@
 {% load static %}
 {% block content %}
 <div class="main-wrapper">
-
-
     <br>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="select" checked>
+        <label class="form-check-label" for="select">Только номера</label>
+      </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h3>Контейнеры 1 (найдено {{vagons_1.vagons|length}}шт.)</h3>
+                <h3>Контейнеры 11 (найдено {{vagons_1.vagons|length}}шт.)</h3>
             </div>
             <div class="col">
 
@@ -21,7 +23,7 @@
         <div class="row files-data">
             <div class="col">
                 <h5>Уникальные контейнеры в 1 ({{unique_vagons_1|length}}шт.)</h5>
-                <textarea type="text" class="form-control" disabled >{%for vag in unique_vagons_1%}{{vag}}{%endfor%}</textarea>
+                <textarea type="text" class="form-control" disabled id="unique_vagons_1">{%for vag in unique_vagons_1%}{{vag}}{%endfor%}</textarea>
                 {%if vagons_1.rus_vagons%}
                 <h6>с русскими буквами</h6>
                 {%for ru_vag in vagons_1.rus_vagons%}
@@ -31,11 +33,11 @@
             </div>
              <div class="col">
                  <h5>Общие контейнеры ({{jeneral_vagons|length}}шт.)</h5>
-                <textarea type="text" class="form-control" disabled >{%for vag in jeneral_vagons%}{{vag}}{%endfor%}</textarea>
+                <textarea type="text" class="form-control" disabled id="jeneral_vagons">{%for vag in jeneral_vagons%}{{vag}}{%endfor%}</textarea>
             </div>
             <div class="col">
                 <h5>Уникальные контейнеры в 2 ({{unique_vagons_2|length}}шт.)</h5>
-                <textarea type="text" class="form-control" disabled >{%for vag in unique_vagons_2%}{{vag}}{%endfor%}</textarea>
+                <textarea type="text" class="form-control" disabled disabled id="unique_vagons_2">{%for vag in unique_vagons_2%}{{vag}}{%endfor%}</textarea>
                   {%if vagons_2.rus_vagons%}
                 <h6>с русскими буквами</h6>
                 {%for ru_vag in vagons_2.rus_vagons%}
@@ -66,4 +68,36 @@ p span{
 color: red;
 }
 </style>
+<script>
+    let data_views = {
+        'full': {
+            'unique_vagons_1': `{%for vag in unique_vagons_1%}{{vag.vagon_data}}{%endfor%}`,
+            'unique_vagons_2': `{%for vag in unique_vagons_2%}{{vag.vagon_data}}{%endfor%}`,
+            'jeneral_vagons': `{%for vag in jeneral_vagons%}{{vag.vagon_data}}{%endfor%}`,
+        },
+        'only_id': {
+            'unique_vagons_1': `{%for vag in unique_vagons_1%}{{vag}}{%endfor%}`,
+            'unique_vagons_2': `{%for vag in unique_vagons_2%}{{vag}}{%endfor%}`,
+            'jeneral_vagons': `{%for vag in jeneral_vagons%}{{vag}}{%endfor%}`,
+        },
+    }
+    
+    let unique_vagons_1 = ''
+    let unique_vagons_2 = ''
+    let jeneral_vagons = ''
+
+
+    $('#select').click(function(){
+        if ($(this).is(':checked')){
+            addData('only_id')
+        } else { addData('full')}
+    })
+
+    function addData(key){
+        let data = data_views[key]
+        $('#unique_vagons_1').text(data['unique_vagons_1'])
+        $('#unique_vagons_2').text(data['unique_vagons_2'])
+        $('#jeneral_vagons').text(data['jeneral_vagons'])
+    }
+</script>
 {%endblock%}
