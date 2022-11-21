@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .vagons_reader import VagReader
+from .people_counter import PeopleCounter
 
 
 # Create your views here.
@@ -20,3 +21,16 @@ def index(requets):
             'jeneral_vagons': vagons_1 & vagons_2,
         }
         return render(requets, 'vagons/result.html', content)
+
+
+def people_count(requests):
+    if requests.method != 'POST':
+        return render(requests,'vagons/people_count.html')
+    else:
+        text = requests.POST['text']
+        counter = PeopleCounter(text)
+        counter.proccess()
+        content = {
+            'counter': counter,
+        }
+        return render(requests,'vagons/people_count.html', content)

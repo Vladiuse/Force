@@ -2,6 +2,11 @@ import re
 
 
 class Vagon:
+    LETTERS_WEIGHT = {
+        'A': 10, 'B': 12, 'C': 13, 'D': 14, 'E': 15, 'F': 16, 'G': 17, 'H': 18, 'I': 19, 'J': 20,
+        'K': 21, 'L': 23, 'M': 24, 'N': 25, 'O': 26, 'P': 27, 'Q': 28, 'R': 29, 'S': 30, 'T': 31,
+        'U': 32, 'V': 34, 'W': 35, 'X': 36, 'Y': 37, 'Z': 38,
+    }
 
     def __init__(self, vagon_data):
         self.vagon_data = vagon_data + '\n'
@@ -11,13 +16,44 @@ class Vagon:
         return str(self.id + '\n')
 
     def find_vagon(self):
-        vagon = re.search('[A-zА-я]{4}\s*\d{7}', self.vagon_data)
+        vagon = re.search('[A-zА-я]{4}\s{0,2}0{0,2}\d{7}', self.vagon_data)
         if vagon:
             vagon_id = vagon.group(0)
+            vagon_id = vagon_id.replace(' ', '')
+            vagon_id = vagon_id.replace('\t', '')
+            if len(vagon_id) == 13:
+                vagon_id = vagon_id[:4] + vagon_id[6:]
             return vagon_id
 
+    def is_vagon_number_correct(self):
+        res = 0
+        if not self.id:
+            return None
+        for id, char in enumerate(self.id[:-1]):
+
+            if id <4:
+                number = Vagon.LETTERS_WEIGHT[char] * 2**id
+                print(id,char,Vagon.LETTERS_WEIGHT[char], 2**id)
+            else:
+                number = int(char) * 2**id
+                print(id,char, 2**id)
+            res += number
+
+        if self.id[-1] == str(res%11)[-1]:
+            return True
+        else:
+            return False
+
+    @property
+    def letters(self):
+        return self.id[:4]
+
+    @property
+    def numbers(self):
+        return self.id[4:]
+
     def is_has_ru_letters(self):
-        return not bool(re.search('[A-z]{4}\s*\d{7}', self.id))
+        return not bool(re.search('[A-z]{4}\d{7}', self.id))
 
     def get_ru_warning_id(self):
         symbols = 'qwertyuiopasdfghjklzxcvbnm'.upper()
@@ -65,6 +101,9 @@ class VagReader:
     def rus_vagons(self):
         return list(filter(lambda vagon: vagon.is_has_ru_letters(), self.vagons))
 
+    def get_incorrect_vagons(self):
+        return list(filter(lambda vagon: not vagon.is_vagon_number_correct(), self.vagons))
+
     def __sub__(self, instance):
         unigue_ids = self.get_vagons_ids() - instance.get_vagons_ids()
         unique_vagons = list(self.get_vagons_by_ids(unigue_ids))
@@ -74,3 +113,12 @@ class VagReader:
         jeneral_ids = self.get_vagons_ids() & instance.get_vagons_ids()
         jeneral_vagons = list(self.get_vagons_by_ids(jeneral_ids))
         return list(self.sort_vagons(jeneral_vagons))
+
+
+
+
+
+if __name__ == '__main__':
+    row = 'TCLU2261070'
+    vag = Vagon(row)
+    print(vag.is_vagon_number_correct())

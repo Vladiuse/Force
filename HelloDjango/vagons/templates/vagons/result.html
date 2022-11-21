@@ -47,6 +47,20 @@
             </div>
         </div>
         <div class="row">
+            <div class="col"><h5>Некоректные номера контейнеров</h5></div>
+        </div>
+        <div class="row files-data">
+            <div class="col">
+                <textarea type="text" class="form-control" disabled >{%for vag in vagons_1.get_incorrect_vagons%}{{vag}}{%endfor%}</textarea>
+            </div>
+            <div class="col">
+
+            </div>
+            <div class="col">
+                <textarea type="text" class="form-control" disabled >{%for vag in vagons_2.get_incorrect_vagons%}{{vag}}{%endfor%}</textarea>
+            </div>
+        </div>
+        <div class="row">
             <div class="col"><h5>Строки без контейнеры</h5></div>
         </div>
         <div class="row files-data">
