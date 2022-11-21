@@ -1,0 +1,17 @@
+{% extends 'office/base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-wrapper">
+  <form method="POST">
+    {%csrf_token%}
+
+    <textarea name="text"></textarea>
+    <button type="submit">Send</button>
+  </form>
+  <hr>
+  <h5>Общее количество: {{counter.GENERAL_COUNT}}</h5>
+  <textarea style="height: 600px; width: 400px">{{counter.res_text}}</textarea>
+</div>
+
+
+{%endblock%}
