@@ -23,7 +23,7 @@ class Vagon:
             vagon_id = vagon_id.replace('\t', '')
             if len(vagon_id) == 13:
                 vagon_id = vagon_id[:4] + vagon_id[6:]
-            return vagon_id
+            return vagon_id.upper()
 
     def is_vagon_number_correct(self):
         res = 0
