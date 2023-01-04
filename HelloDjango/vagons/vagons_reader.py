@@ -15,6 +15,28 @@ class Vagon:
     def __str__(self):
         return str(self.id + '\n')
 
+
+
+    @staticmethod
+    def find_vagon_number(text_line):
+        v_number =re.search('[A-zА-я]{4}\s{0,4}0{0,2}\d{7}', text_line)
+        if v_number:
+            return v_number.group(0)
+        return None
+
+    @staticmethod
+    def prettify_vagon_number(vagon_number):
+        """Уюирает 00 или 0 у номера контейнера и убирает пробелы"""
+        vagon_number = vagon_number.replace(' ', '')
+        vagon_number = vagon_number.upper()
+        if vagon_number[4:6] == '00' and len(vagon_number) == 13:
+            vagon_number = vagon_number[:4] + vagon_number[6:]
+        if vagon_number[4:5] == '0' and len(vagon_number) == 12:
+            vagon_number = vagon_number[:4] + vagon_number[5:]
+        return vagon_number
+
+
+
     def find_vagon(self):
         vagon = re.search('[A-zА-я]{4}\s{0,2}0{0,2}\d{7}', self.vagon_data)
         if vagon:
@@ -26,6 +48,8 @@ class Vagon:
             return vagon_id.upper()
 
     def is_vagon_number_correct(self):
+        if self.is_has_ru_letters():
+            return False
         res = 0
         if not self.id:
             return None
@@ -43,14 +67,6 @@ class Vagon:
             return True
         else:
             return False
-
-    @property
-    def letters(self):
-        return self.id[:4]
-
-    @property
-    def numbers(self):
-        return self.id[4:]
 
     def is_has_ru_letters(self):
         return not bool(re.search('[A-z]{4}\d{7}', self.id))
@@ -102,7 +118,7 @@ class VagReader:
         return list(filter(lambda vagon: vagon.is_has_ru_letters(), self.vagons))
 
     def get_incorrect_vagons(self):
-        return list(filter(lambda vagon: not vagon.is_vagon_number_correct(), self.vagons))
+        return list(filter(lambda vagon: not vagon.is_container_number_correct(), self.vagons))
 
     def __sub__(self, instance):
         unigue_ids = self.get_vagons_ids() - instance.get_vagons_ids()

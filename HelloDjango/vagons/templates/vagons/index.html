@@ -1,28 +1,43 @@
-{% extends 'office/base.html' %}
+{% extends 'vagons/base.html' %}
 {% load static %}
 {% block content %}
+<style>
+    .file-names,.files-data{
+        margin-bottom: 20px;
+    }
+    .files-data textarea{
+    height: 600px;
+}
+#clear{
+    margin-left: 20px;
+}
+</style>
 <div class="main-wrapper">
-    <h1>Vagons</h1>
+    <h1>Контейнеры</h1>
     <div class="container">
-        <div class="row">
-            <div class="col"><h3>Контейнеры 1</h3></div>
-            <div class="col"><h3>Контейнеры 2</h3></div>
-        </div>
         <form method="POST">
-                     {% csrf_token %}
-            <div class="row files-data">
-                <div class="col"><textarea type="text" class="form-control" required name="file_text_1"></textarea></div>
-                <div class="col"><textarea type="text" class="form-control" required name="file_text_2"></textarea></div>
-            </div>
+            {% csrf_token %}
+        <div class="row file-names">
+            <div class="col"><input type="text" class="form-control" value="Файл с контейнерами №1" required name="file_name_1"></div>
+            <div class="col"><input type="text" class="form-control" value="Файл с контейнерами №2" required name="file_name_2"></div>
+        </div>
+        
+        <div class="row files-data">
+            <div class="col"><textarea type="text" class="form-control" required name="file_text_1"></textarea></div>
+            <div class="col"><textarea type="text" class="form-control" required name="file_text_2"></textarea></div>
+        </div>
 
-            <button class="btn btn-primary">Отправить</button>
+        <button class="pure-material-button-contained">Проверить</button>
+        <button id="clear" class="pure-material-button-text">Отчистить</button>
         </form>
     </div>
 
 </div>
-<style>
-.files-data textarea{
-    height: 700px;
-}
-</style>
+<script>
+    $('#clear').click(function(e){
+        e.preventDefault()
+        $('textarea').val('')
+    })
+</script>
+
 {%endblock%}

@@ -238,7 +238,7 @@
     <div class="col" id="card-exsample">
       <div class="card h-100">
         <a href="{{site.get_site_url}}" class="site_url" target="_blank">
-            <img src="media/{{site.image}}" class="card-img-top" alt="...">
+            <img src="media/{{site.image}}" class="card-img-top 111" alt="...">
         </a>
         <div class="card-body">
           <h5 class="card-title">{{site.path}}</h5>
@@ -284,7 +284,7 @@
     <div class="col cataloge-card" id="cataloge-exsample">
       <div class="card h-100">
         <a href="#" class="cataloge_url" target="_blank">
-            <img src="media/tech/folder_d82hd31d.png" class="card-img-top" alt="..." >
+            <img src="../media/tech/folder_d82hd31d.png" class="card-img-top" alt="..." >
         </a>
         <div class="card-body">
           <h5 class="card-title">Название Папки</h5>
@@ -512,7 +512,7 @@
         card.find('.dropdown a').text(category) 
         card.find('.language').text('Язык: ' + languege)
         card.find('.language').attr('data-site-lang', languageID)
-        card.find('img').attr('src', cardImage)
+        card.find('img').attr('src', "../"+cardImage)
         card.attr('id', card_id)
         if (dirPath.startsWith('http')){
           card.find('.site_url').attr('href', dirPath)
