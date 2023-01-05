@@ -2,6 +2,12 @@ import unittest
 from unittest.mock import patch
 from .containers_reader import Container, ContainerFile, ContainerList, NotContainerError
 
+A = 'AAAA1234567'
+B = 'BBBB1234567'
+C = 'CCCC1234567'
+D = 'DDDD1234567'
+F = 'FFFF1234567'
+
 
 class TestContainer(unittest.TestCase):
 
@@ -87,8 +93,67 @@ class TestContainer(unittest.TestCase):
             container_list = ContainerList(*conts)
 
 
+class TestContainerList(unittest.TestCase):
 
+    def test__create_container_list_from_seq(self):
+        li = ['AAAA1234567', 'BBBB1234567', 'CCCC1234567']
+        c_list = ContainerList.create_container_list_from_seq(li)
+        self.assertEqual(len(c_list), 3)
+        for con_num in li:
+            c = Container(con_num)
+            self.assertTrue(c in c_list)
 
+    def test_ru_letters_containers(self):
+        conts_numbers = ['ФФФФ1234567', 'ЖЖЖЖЖ1234567', 'BBBB1234567', 'AAAA1234567']
+        c_list = ContainerList()
+        for num in conts_numbers:
+            c = Container(num)
+            c_list.append(c)
+        ru_containers = c_list.rus_containers()
+        self.assertTrue(len(ru_containers), 2)
+        self.assertTrue(Container('ФФФФ1234567') in ru_containers)
+        self.assertTrue(Container('ЖЖЖЖЖ1234567') in ru_containers)
+
+    def test_get_unique_containers(self):
+        conts_numbers = ['AAAA1234567', 'BBBB1234567', 'BBBB1234567', ]
+        c_list = ContainerList()
+        for num in conts_numbers:
+            c = Container(num)
+            c_list.append(c)
+        unique_list = c_list.unique()
+        self.assertTrue(len(unique_list), 2)
+        self.assertTrue(Container('AAAA1234567') in unique_list)
+        self.assertTrue(Container('BBBB1234567') in unique_list)
+
+    def test_get_duplicates_containers(self):
+        conts_numbers = ['AAAA1234567', 'AAAA1234567', 'BBBB1234567', 'BBBB1234567', 'CCCC1234567']
+        c_list = ContainerList()
+        for num in conts_numbers:
+            c = Container(num)
+            c_list.append(c)
+        duplicates = c_list.duplicates()
+        self.assertTrue(len(duplicates), 2)
+        self.assertTrue(Container('BBBB1234567') in duplicates)
+        self.assertTrue(Container('AAAA1234567') in duplicates)
+
+    def test_list_minus_list_like_set(self):
+        c_list_1 = ContainerList.create_container_list_from_seq([
+            'AAAA1234567', 'BBBB1234567'
+        ])
+        c_list_2 = ContainerList.create_container_list_from_seq([
+            'BBBB1234567', 'CCCC1234567'
+        ])
+        res_list = c_list_1 - c_list_2
+        self.assertTrue(len(res_list), 1)
+        self.assertTrue(Container('AAAA1234567') in res_list)
+
+    def test_and_lists_like_sets(self):
+        c_list_1 = ContainerList.create_container_list_from_seq([A, B, C])
+        c_list_2 = ContainerList.create_container_list_from_seq([B, C, D])
+        result = c_list_1 & c_list_2
+        self.assertTrue(len(result), 2)
+        for num in B, C:
+            self.assertTrue(Container(num) in result)
 
 class TestContainerFile(unittest.TestCase):
 
@@ -110,8 +175,8 @@ class TestContainerFile(unittest.TestCase):
          1 172 GAWU5026906 /99 пор.  """
         file = ContainerFile(text)
         file.process()
-        self.assertEqual(len(file.containers),10)
-        self.assertEqual(len(file.no_containers_lines),5)
+        self.assertEqual(len(file.containers), 10)
+        self.assertEqual(len(file.no_containers_lines), 5)
 
 
 if __name__ == '__main__':

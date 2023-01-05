@@ -1,4 +1,6 @@
 import re
+from collections import Counter
+import json
 
 
 class NotContainerError(Exception):
@@ -15,6 +17,10 @@ class Container:
     def __init__(self, container_id: str, source_text_line=''):
         self.id = container_id
         self.text_line = source_text_line
+
+    @property
+    def json(self):
+        return {'id': self.id, 'text_line': self.text_line}
 
     @staticmethod
     def find_container_number(text_line):
@@ -63,7 +69,7 @@ class Container:
         return int(res)
 
     def __eq__(self, other):
-        if not isinstance(other,type(self)):
+        if not isinstance(other, type(self)):
             return NotImplemented
         return self.id == other.id
 
@@ -80,6 +86,14 @@ class ContainerList:
         self.containers = list(containers)
         self._validate()
 
+    @staticmethod
+    def create_container_list_from_seq(seq):
+        c_list = ContainerList()
+        for num in seq:
+            c = Container(num)
+            c_list.append(c)
+        return c_list
+
     def _validate(self):
         if not all([isinstance(item, Container) for item in self.containers]):
             raise NotContainerError
@@ -90,7 +104,7 @@ class ContainerList:
         self.containers.append(elem)
 
     def __str__(self):
-        return f'ContainerList:{self.containers}'
+        return f'<ContainerList:len={len(self)}> {self.containers}'
 
     def __repr__(self):
         return str(self.containers)
@@ -109,15 +123,49 @@ class ContainerList:
         except IndexError:
             raise StopIteration
 
+    def __sub__(self, other):
+        if not isinstance(other, ContainerList):
+            raise NotImplemented
+        s1 = set(self.containers)
+        s2 = set(other.containers)
+        res = s1 - s2
+        return ContainerList(*res)
+
+    def __and__(self, other):
+        if not isinstance(other, ContainerList):
+            raise NotImplemented
+        s1 = set(self.containers)
+        s2 = set(other.containers)
+        res = s1 & s2
+        return ContainerList(*res)
+
     def rus_containers(self):
-        ru_containers = list(filter(lambda container: container.is_has_ru_letters(), self.containers))
+        # ru_containers = list(filter(lambda container: container.is_has_ru_letters(), self.containers))
+        ru_containers = filter(Container.is_has_ru_letters, self.containers)
         return ContainerList(*ru_containers)
 
     def unique(self):
-        unique_containers = set()
-        for cont in self.containers:
-            unique_containers.add(cont)
-        return unique_containers
+        unique_containers = set(self.containers)
+        return ContainerList(*unique_containers)
+
+    def duplicates(self):
+        counter = Counter()
+        counter.update(self.containers)
+        duplicates_containers = list()
+        for k, v in counter.items():
+            if v > 1:
+                duplicates_containers.append(k)
+        return ContainerList(*duplicates_containers)
+
+    def incorrect_number_containers(self):
+        incorrect_number = list(filter(lambda container: container.is_container_number_correct(), self.containers))
+        return ContainerList(*incorrect_number)
+
+    def json(self):
+        li = list()
+        for con in self.containers:
+            li.append(con.json)
+        return json.dumps(li)
 
 
 class ContainerFile:
@@ -141,6 +189,9 @@ class ContainerFile:
                 if line != '':
                     self.no_containers_lines.append(line)
 
+    def get_no_containers_lines_json(self):
+        res = json.dumps(self.no_containers_lines)
+        return res
 
 
 class ContainerReader:
@@ -152,31 +203,39 @@ class ContainerReader:
         self.file_2.process()
 
     def unique_containers_file_1(self):
-        return self.file_1.containers.unique() - self.file_2.containers.unique()
+        """Уникальные контейнеры для файла 1"""
+        return self.file_1.containers - self.file_2.containers
 
     def unique_containers_file_2(self):
-        return self.file_2.containers.unique() - self.file_1.containers.unique()
+        """Уникальные контейнеры для файла 2"""
+        return self.file_2.containers - self.file_1.containers
 
     def common_containers(self):
-        return self.file_1.containers.unique() & self.file_2.containers.unique()
+        """Общие контейнеры для 2х файлов"""
+        return self.file_1.containers & self.file_2.containers
 
     def result(self):
         return {
-            'file_1_unique_containers': list(self.unique_containers_file_1()),
-            'file_2_unique_containers': list(self.unique_containers_file_2()),
-            'file_1_ru_containers': self.file_1.containers.rus_containers(),
-            'common_containers': list(self.common_containers()),
+            'file_1_unique_containers': self.unique_containers_file_1().json(),
+            'file_2_unique_containers': self.unique_containers_file_1().json(),
+            'common_containers': self.common_containers().json(),
 
         }
+        # return {
+        #     'file_1_unique_containers': list(self.unique_containers_file_1()),
+        #     'file_2_unique_containers': list(self.unique_containers_file_2()),
+        #     'file_1_ru_containers': self.file_1.containers.rus_containers(),
+        #     'common_containers': list(self.common_containers()),
+        #
+        # }
 
     def result_no_containers(self):
         return {
-            'file_1_no_conteiner_list': self.file_1.no_containers_lines,
-            'file_2_no_conteiner_list': self.file_2.no_containers_lines,
+            'file_1_no_conteiner_list': self.file_1.get_no_containers_lines_json(),
+            'file_2_no_conteiner_list': self.file_2.get_no_containers_lines_json(),
         }
 
 
 if __name__ == '__main__':
-    pass
-
-
+    c_list = ContainerList.create_container_list_from_seq(['AAAA1234567', 'AAAA1234567', 'AAAA1234567'])
+    print(c_list.json())
