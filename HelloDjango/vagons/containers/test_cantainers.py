@@ -9,6 +9,9 @@ D = 'DDDD1234567'
 F = 'FFFF1234567'
 E = 'EEEE1234567'
 
+RU_F = 'ФФФФ1234567'
+RU_G = 'ГГГГ1234567'
+
 
 class TestContainer(unittest.TestCase):
 
@@ -93,6 +96,16 @@ class TestContainer(unittest.TestCase):
         with self.assertRaises(NotContainerError) as context:
             container_list = ContainerList(*conts)
 
+    def test_containers_equal(self):
+        c1 = Container(A)
+        c2 = Container(A)
+        self.assertEqual(c1, c2)
+
+    def test_containers_not_equal(self):
+        c1 = Container(A)
+        c2 = Container(B)
+        self.assertNotEqual(c1, c2)
+
 
 class TestContainerList(unittest.TestCase):
 
@@ -155,6 +168,22 @@ class TestContainerList(unittest.TestCase):
         self.assertTrue(len(result), 2)
         for num in B, C:
             self.assertTrue(Container(num) in result)
+
+    def test_get_unique_ru_containers(self):
+        seq = [A, B, B, C, C, RU_F, RU_G]
+        c_list = ContainerList.create_container_list_from_seq(seq)
+        c_list = c_list.unique
+        self.assertTrue(len(c_list), 5)
+        ru_list = c_list.rus_number
+        self.assertTrue(len(ru_list), 2)
+
+    def test_incorrect_containers(self):
+        seq = [A, B, C, D]
+        c_list = ContainerList.create_container_list_from_seq(seq)
+        incorrect = c_list.incorrect_number
+        self.assertEqual(len(incorrect), 3)
+        self.assertTrue(Container(C) not in incorrect)
+
 
 class TestContainerFile(unittest.TestCase):
 

@@ -24,6 +24,7 @@ class Container:
 
     @staticmethod
     def find_container_number(text_line):
+        """Поиск в строке номера контейнера"""
         v_number = re.search('[A-zА-я]{4}\s{0,4}0{0,2}\d{7}', text_line)
         if v_number:
             return v_number.group(0)
@@ -41,9 +42,11 @@ class Container:
         return container_number
 
     def is_has_ru_letters(self):
+        """Есть ли в номере контейнера русские буквы"""
         return not bool(re.search('[A-z]{4}\d{7}', self.id))
 
     def is_container_number_correct(self):
+        """Явзяеться ли номер контейнера корректным"""
         if self.is_has_ru_letters():
             return False
         res = 0
@@ -88,6 +91,7 @@ class ContainerList:
 
     @staticmethod
     def create_container_list_from_seq(seq):
+        """Создсть список с контейнерами из списка со строками (для тестов)"""
         c_list = ContainerList()
         for num in seq:
             c = Container(num)
@@ -95,10 +99,12 @@ class ContainerList:
         return c_list
 
     def _validate(self):
+        """Все ли контейнеры являються классом Container"""
         if not all([isinstance(item, Container) for item in self.containers]):
             raise NotContainerError
 
-    def append(self, elem):
+    def append(self, elem: Container):
+        """добавить контейнер в список"""
         if not (isinstance(elem, Container)):
             raise NotContainerError
         self.containers.append(elem)
@@ -124,6 +130,7 @@ class ContainerList:
             raise StopIteration
 
     def __sub__(self, other):
+        """Уникальные контейнеры для списка"""
         if not isinstance(other, ContainerList):
             raise NotImplemented
         s1 = set(self.containers)
@@ -132,6 +139,7 @@ class ContainerList:
         return ContainerList(*res)
 
     def __and__(self, other):
+        """Общие контейнеры у 2х списков"""
         if not isinstance(other, ContainerList):
             raise NotImplemented
         s1 = set(self.containers)
@@ -141,17 +149,19 @@ class ContainerList:
 
     @property
     def rus_number(self):
-        # ru_containers = list(filter(lambda container: container.is_has_ru_letters(), self.containers))
+        """Контейнеры с русскими буквами"""
         ru_containers = filter(Container.is_has_ru_letters, self.containers)
         return ContainerList(*ru_containers)
 
     @property
     def unique(self):
+        """Уникальные номера контейнеров"""
         unique_containers = set(self.containers)
         return ContainerList(*unique_containers)
 
     @property
     def duplicates(self):
+        """Контейнеры дубли в списке"""
         counter = Counter()
         counter.update(self.containers)
         duplicates_containers = list()
@@ -162,14 +172,12 @@ class ContainerList:
 
     @property
     def incorrect_number(self):
-        # incorrect_number = list()
-        # for cont in self.containers:
-        #     if not cont.is_container_number_correct():
-        #         incorrect_number.append(cont)
+        """некорекнтные номера контейнеров"""
         incorrect_number = filter(lambda container: not container.is_container_number_correct(), self.containers)
         return ContainerList(*incorrect_number)
 
     def json(self):
+        """Список в json формате"""
         li = list()
         for con in self.containers:
             li.append(con.json)
@@ -184,6 +192,7 @@ class ContainerFile:
         self.no_containers_lines = []
 
     def process(self):
+        """Отсеять строки с контейнерами и без и наполнить список"""
         for char in '\r', '\t':
             self.text_file = self.text_file.replace(char, '\n')
 
@@ -198,6 +207,7 @@ class ContainerFile:
                     self.no_containers_lines.append(line)
 
     def get_no_containers_lines_json(self):
+        """Получить список json строк файла без контейнеров"""
         res = json.dumps(self.no_containers_lines)
         return res
 
@@ -211,9 +221,11 @@ class ContainerReader:
         self.file_2.process()
 
     def incorrect_1(self):
+        """Некоректные номера из файла 1"""
         return self.file_1.containers.incorrect_number.json()
 
     def incorrect_2(self):
+        """Некоректные номера из файла 2"""
         return self.file_2.containers.incorrect_number.json()
 
     def unique_containers_file_1(self):
