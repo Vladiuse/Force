@@ -1,5 +1,5 @@
 {% extends 'vagons/base.html' %}
-{%block page-name%}Сверка списков номеров контейнеров v0.2{%endblock%}
+
 {% block content %}
 <style>
     .file-names,.files-data{
@@ -13,8 +13,10 @@
 }
 </style>
 <div class="main-wrapper">
-    <h1>Контейнеры</h1>
     <div class="container">
+        {%if error_text%}
+        <p style="color: red">{{error_text}}</p>
+        {%endif%}
         <form method="POST">
             {% csrf_token %}
         <div class="row file-names">

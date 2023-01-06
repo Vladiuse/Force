@@ -12,7 +12,13 @@
     height: 60vh;
     margin-bottom: 20px;
   }
-
+  .copy-button{
+    display: flex;
+    justify-content: center;
+  }
+  #text{
+    
+  }
 </style>
 <div class="container">
   <div class="row">
@@ -31,7 +37,9 @@
       <h5>Общее количество: {{counter.GENERAL_COUNT}}</h5>
       <textarea class="form-control" id="result" {%if not counter.res_text%}disabled{%endif%}>{{counter.res_text}}</textarea>
       {%if counter.res_text%}
-      <button class="pure-material-button-contained" id="copy" onclick="copyTextCode('result')">Скопировать</button>
+      <div class="copy-button">
+        <button class="pure-material-button-contained" id="copy" onclick="copyTextCode('result')">Скопировать</button>
+      </div>
       {%endif%}
     </div>
   </div>

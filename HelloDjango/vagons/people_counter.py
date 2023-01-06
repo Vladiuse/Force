@@ -1,7 +1,6 @@
 import re
 
 
-
 class PeopleCounter:
 
     def __init__(self, text):
@@ -14,7 +13,6 @@ class PeopleCounter:
 
     def res_text(self):
         return '\n'.join(self.res)
-
 
     def proccess(self):
         for line in self.text.split('\n'):

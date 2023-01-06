@@ -1,6 +1,4 @@
 {% extends 'vagons/base.html' %}
-
-{%block page-name%}Сверка списков номеров контейнеров v0.2{%endblock%}
 {%block content%}
 <style>
     .container-fluid{
@@ -28,32 +26,37 @@
     #copy-chosen{
         margin-left: 20px;
     }
+    h5{
+        margin-top: 0.5rem;
+    }
 </style>
 
 <div class="container-fluid">
-    <label class="pure-material-switch">
+    <label class="pure-material-switch" data-bs-toggle="tooltip" data-bs-placement="right" title="Показывать только номера контейнеров, либо всю строку с найденым в ней номером из документа целиком">
         <input id="spellcheck" type="checkbox" checked>
         <span>Строки целиком</span>
     </label>
     <button class="pure-material-button-contained" id="copy-chosen" style="display: none;">Скопировать выделеные</button>
     <div class="row">
         <div class="col">
-            <h3>{{file_name_1}} (найдено {{reader.file_1.containers|length}}шт.)</h3>
+            <h3>{{file_name_1}} <br>Найдено: {{reader.file_1.containers|length}}шт.</h3>
         </div>
         <div class="col">
             <!-- NONE -->
         </div>
         <div class="col">
-            <h3>{{file_name_2}} (найдено {{reader.file_2.containers|length}}шт.)</h3>
+            <h3>{{file_name_2}}<br>Найдено: {{reader.file_2.containers|length}}шт.</h3>
         </div>
     </div>
     <div class="row unique">
         <div class="col">
-            <h5>Уникальные контейнеры ({{reader.unique_containers_file_1|length}}шт.)</h5>
+            <h5>
+                Уникальные контейнеры ({{reader.unique_containers_file_1|length}}шт. )</h5>
             <textarea class="form-control" id="file_1_unique_containers"></textarea>
         </div>
         <div class="col">
-            <h5>Общие контейнеры ({{reader.common_containers|length}}шт.)</h5>
+            <h5 data-bs-toggle="tooltip" data-bs-placement="top" title="Список обших контейнеров для двух документов (присутствуют в обоих файлах)">
+                Общие контейнеры ({{reader.common_containers|length}}шт.)</h5>
             <textarea class="form-control" id="common_containers"></textarea>
         </div>
         <div class="col">
@@ -61,7 +64,8 @@
             <textarea class="form-control" id="file_2_unique_containers"></textarea>
         </div>
     </div>
-    <h5 style="text-align: center;">Некоректные номера контейнеров</h5>
+    <h5 style="text-align: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="Номера контейнеров, чья последняя цифра в номере не правильно расчитана по формуле">
+        Некоректные номера контейнеров</h5>
     <div class="row incorrect">
         <div class="col">
             <textarea class="form-control" id="incorrect_1"></textarea>
@@ -73,7 +77,8 @@
             <textarea class="form-control" id="incorrect_2"></textarea>
         </div>
     </div>
-    <h5 style="text-align: center;">Номера с русскими буквами</h5>
+    <h5 style="text-align: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="Койтейнеры, в чьем номере присутствует русская буква, или несколько">
+        Номера с русскими буквами</h5>
     <div class="row ru-letters">
         <div class="col">
             <textarea class="form-control" id="file_1_ru_leters"></textarea>
@@ -85,7 +90,8 @@
             <textarea class="form-control" id="file_2_ru_leters"></textarea>
         </div>
     </div>
-    <h5 style="text-align: center;">Строки без номеров контейнеров</h5>
+    <h5 style="text-align: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="Строки из файлов в которых нет номеров контейнеров. Наличие номера в тексте говорит об ошибке!">
+        Строки без номеров контейнеров</h5>
     <div class="row no-containers">
         <div class="col">
             <textarea disabled class="form-control" id="file_1_no_conteiner_list"></textarea>

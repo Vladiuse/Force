@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 from .containers_reader import Container, ContainerFile, ContainerList, NotContainerError
 
 A = 'AAAA1234567'
@@ -147,19 +146,15 @@ class TestContainerList(unittest.TestCase):
             c_list.append(c)
         duplicates = c_list.duplicates
         self.assertTrue(len(duplicates), 2)
-        self.assertTrue(Container('BBBB1234567') in duplicates)
-        self.assertTrue(Container('AAAA1234567') in duplicates)
+        self.assertTrue(Container(B) in duplicates)
+        self.assertTrue(Container(A) in duplicates)
 
     def test_list_minus_list_like_set(self):
-        c_list_1 = ContainerList.create_container_list_from_seq([
-            'AAAA1234567', 'BBBB1234567'
-        ])
-        c_list_2 = ContainerList.create_container_list_from_seq([
-            'BBBB1234567', 'CCCC1234567'
-        ])
+        c_list_1 = ContainerList.create_container_list_from_seq([A, B])
+        c_list_2 = ContainerList.create_container_list_from_seq([B, C])
         res_list = c_list_1 - c_list_2
         self.assertTrue(len(res_list), 1)
-        self.assertTrue(Container('AAAA1234567') in res_list)
+        self.assertTrue(Container(A) in res_list)
 
     def test_and_lists_like_sets(self):
         c_list_1 = ContainerList.create_container_list_from_seq([A, B, C])
