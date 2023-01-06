@@ -110,7 +110,7 @@ class TestContainerList(unittest.TestCase):
         for num in conts_numbers:
             c = Container(num)
             c_list.append(c)
-        ru_containers = c_list.rus_containers
+        ru_containers = c_list.rus_number
         self.assertTrue(len(ru_containers), 2)
         self.assertTrue(Container('ФФФФ1234567') in ru_containers)
         self.assertTrue(Container('ЖЖЖЖЖ1234567') in ru_containers)

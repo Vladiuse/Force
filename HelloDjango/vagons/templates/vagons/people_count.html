@@ -20,10 +20,10 @@
       <form method="POST">
         {%csrf_token%}
         <h5>Вставте текст документа:</h5>
-        <textarea name="text" class="form-control"></textarea>
+        <textarea name="text" class="form-control" id="text"{%if text%}disabled{%endif%}>{{text}}</textarea>
         <div class="for-buttons">
           <button class="pure-material-button-contained" type="submit">Проверить</button>
-        <button id="clear" class="pure-material-button-text" type="reset">Отчистить</button>
+        <button id="clear" class="pure-material-button-text" type="none">Отчистить</button>
         </div>
       </form>
     </div>
@@ -31,25 +31,19 @@
       <h5>Общее количество: {{counter.GENERAL_COUNT}}</h5>
       <textarea class="form-control" id="result" {%if not counter.res_text%}disabled{%endif%}>{{counter.res_text}}</textarea>
       {%if counter.res_text%}
-      <button class="pure-material-button-contained" onclick="copyTextCode('result')">Скопировать</button>
+      <button class="pure-material-button-contained" id="copy" onclick="copyTextCode('result')">Скопировать</button>
       {%endif%}
-      
     </div>
   </div>
-  
-
 </div>
-
 <script>
-      function copyTextCode(elem){
-        let text = $('#'+elem).children().text()
-        navigator.clipboard.writeText(text)
-        .then(() => {
-            console.log('Text copied to clipboard');
-        })
-        .catch(err => {
-            console.error('Error in copying text: ', err);
-        });
-    }
+  $('#clear').click(function(e){
+    e.preventDefault()
+    $('#copy').hide()
+    $('textarea').val('')
+    $('#text').removeAttr('disabled')
+    $('#result').attr('disabled', 'disabled')
+  })
 </script>
+
 {%endblock%}

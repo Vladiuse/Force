@@ -140,7 +140,7 @@ class ContainerList:
         return ContainerList(*res)
 
     @property
-    def rus_containers(self):
+    def rus_number(self):
         # ru_containers = list(filter(lambda container: container.is_has_ru_letters(), self.containers))
         ru_containers = filter(Container.is_has_ru_letters, self.containers)
         return ContainerList(*ru_containers)
@@ -161,7 +161,7 @@ class ContainerList:
         return ContainerList(*duplicates_containers)
 
     @property
-    def incorrect_number_containers(self):
+    def incorrect_number(self):
         # incorrect_number = list()
         # for cont in self.containers:
         #     if not cont.is_container_number_correct():
@@ -211,10 +211,10 @@ class ContainerReader:
         self.file_2.process()
 
     def incorrect_1(self):
-        return self.file_1.containers.incorrect_number_containers.json()
+        return self.file_1.containers.incorrect_number.json()
 
     def incorrect_2(self):
-        return self.file_2.containers.incorrect_number_containers.json()
+        return self.file_2.containers.incorrect_number.json()
 
     def unique_containers_file_1(self):
         """Уникальные контейнеры для файла 1"""
@@ -230,7 +230,7 @@ class ContainerReader:
 
 
 if __name__ == '__main__':
-    # s1 = """
+    # s1 = """style="text-align: center;"
     #     aaa
     # bbb
     # xxx AAAA 1234567 yyyy

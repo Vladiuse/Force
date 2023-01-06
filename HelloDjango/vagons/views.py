@@ -52,5 +52,6 @@ def people_count(requests):
         counter.proccess()
         content = {
             'counter': counter,
+            'text': text,
         }
         return render(requests,'vagons/people_count.html', content)
