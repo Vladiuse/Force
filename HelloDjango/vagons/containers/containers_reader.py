@@ -48,7 +48,7 @@ class Container:
             return False
         res = 0
         if not self.id:
-            return None
+            return False
         for pos, char in enumerate(self.id[:-1]):
 
             if pos < 4:
@@ -139,15 +139,18 @@ class ContainerList:
         res = s1 & s2
         return ContainerList(*res)
 
+    @property
     def rus_containers(self):
         # ru_containers = list(filter(lambda container: container.is_has_ru_letters(), self.containers))
         ru_containers = filter(Container.is_has_ru_letters, self.containers)
         return ContainerList(*ru_containers)
 
+    @property
     def unique(self):
         unique_containers = set(self.containers)
         return ContainerList(*unique_containers)
 
+    @property
     def duplicates(self):
         counter = Counter()
         counter.update(self.containers)
@@ -157,8 +160,13 @@ class ContainerList:
                 duplicates_containers.append(k)
         return ContainerList(*duplicates_containers)
 
+    @property
     def incorrect_number_containers(self):
-        incorrect_number = list(filter(lambda container: container.is_container_number_correct(), self.containers))
+        # incorrect_number = list()
+        # for cont in self.containers:
+        #     if not cont.is_container_number_correct():
+        #         incorrect_number.append(cont)
+        incorrect_number = filter(lambda container: not container.is_container_number_correct(), self.containers)
         return ContainerList(*incorrect_number)
 
     def json(self):
@@ -202,6 +210,12 @@ class ContainerReader:
         self.file_1.process()
         self.file_2.process()
 
+    def incorrect_1(self):
+        return self.file_1.containers.incorrect_number_containers.json()
+
+    def incorrect_2(self):
+        return self.file_2.containers.incorrect_number_containers.json()
+
     def unique_containers_file_1(self):
         """Уникальные контейнеры для файла 1"""
         return self.file_1.containers - self.file_2.containers
@@ -214,28 +228,28 @@ class ContainerReader:
         """Общие контейнеры для 2х файлов"""
         return self.file_1.containers & self.file_2.containers
 
-    def result(self):
-        return {
-            'file_1_unique_containers': self.unique_containers_file_1().json(),
-            'file_2_unique_containers': self.unique_containers_file_1().json(),
-            'common_containers': self.common_containers().json(),
-
-        }
-        # return {
-        #     'file_1_unique_containers': list(self.unique_containers_file_1()),
-        #     'file_2_unique_containers': list(self.unique_containers_file_2()),
-        #     'file_1_ru_containers': self.file_1.containers.rus_containers(),
-        #     'common_containers': list(self.common_containers()),
-        #
-        # }
-
-    def result_no_containers(self):
-        return {
-            'file_1_no_conteiner_list': self.file_1.get_no_containers_lines_json(),
-            'file_2_no_conteiner_list': self.file_2.get_no_containers_lines_json(),
-        }
-
 
 if __name__ == '__main__':
-    c_list = ContainerList.create_container_list_from_seq(['AAAA1234567', 'AAAA1234567', 'AAAA1234567'])
-    print(c_list.json())
+    # s1 = """
+    #     aaa
+    # bbb
+    # xxx AAAA 1234567 yyyy
+    # xxx BBBB  1234567 yyyy
+    # xxx CCCC1234567 yyyy
+    # ccc
+    #     """
+    # s2 = """
+    #     zzz
+    # yyy
+    # xxx BBBB1234567 yyyy
+    # xxx CCCC1234567 yyyy
+    # xxx DDDD1234567 yyyy
+    # xxx
+    # """
+    # reader = ContainerReader(s1,s2)
+    # print(reader.file_1.containers)
+    # print(reader.incorrect_1())
+    # print(reader.incorrect_2())
+    # print(reader.file_2.containers)
+    c = Container('CCCC1234567')
+    print(c.is_container_number_correct())

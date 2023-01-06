@@ -7,6 +7,7 @@ B = 'BBBB1234567'
 C = 'CCCC1234567'
 D = 'DDDD1234567'
 F = 'FFFF1234567'
+E = 'EEEE1234567'
 
 
 class TestContainer(unittest.TestCase):
@@ -109,7 +110,7 @@ class TestContainerList(unittest.TestCase):
         for num in conts_numbers:
             c = Container(num)
             c_list.append(c)
-        ru_containers = c_list.rus_containers()
+        ru_containers = c_list.rus_containers
         self.assertTrue(len(ru_containers), 2)
         self.assertTrue(Container('ФФФФ1234567') in ru_containers)
         self.assertTrue(Container('ЖЖЖЖЖ1234567') in ru_containers)
@@ -120,7 +121,7 @@ class TestContainerList(unittest.TestCase):
         for num in conts_numbers:
             c = Container(num)
             c_list.append(c)
-        unique_list = c_list.unique()
+        unique_list = c_list.unique
         self.assertTrue(len(unique_list), 2)
         self.assertTrue(Container('AAAA1234567') in unique_list)
         self.assertTrue(Container('BBBB1234567') in unique_list)
@@ -131,7 +132,7 @@ class TestContainerList(unittest.TestCase):
         for num in conts_numbers:
             c = Container(num)
             c_list.append(c)
-        duplicates = c_list.duplicates()
+        duplicates = c_list.duplicates
         self.assertTrue(len(duplicates), 2)
         self.assertTrue(Container('BBBB1234567') in duplicates)
         self.assertTrue(Container('AAAA1234567') in duplicates)

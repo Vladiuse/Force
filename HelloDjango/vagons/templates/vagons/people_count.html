@@ -1,0 +1,55 @@
+{% extends 'vagons/base.html' %}
+
+{%block page-name%}Наличие по клиентам{%endblock%}
+{% block content %}
+<style>
+  form{
+    display: flex;
+    flex-direction: column;
+  }
+  textarea{
+    width: 100%;
+    height: 60vh;
+    margin-bottom: 20px;
+  }
+
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form method="POST">
+        {%csrf_token%}
+        <h5>Вставте текст документа:</h5>
+        <textarea name="text" class="form-control"></textarea>
+        <div class="for-buttons">
+          <button class="pure-material-button-contained" type="submit">Проверить</button>
+        <button id="clear" class="pure-material-button-text" type="reset">Отчистить</button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <h5>Общее количество: {{counter.GENERAL_COUNT}}</h5>
+      <textarea class="form-control" id="result" {%if not counter.res_text%}disabled{%endif%}>{{counter.res_text}}</textarea>
+      {%if counter.res_text%}
+      <button class="pure-material-button-contained" onclick="copyTextCode('result')">Скопировать</button>
+      {%endif%}
+      
+    </div>
+  </div>
+  
+
+</div>
+
+<script>
+      function copyTextCode(elem){
+        let text = $('#'+elem).children().text()
+        navigator.clipboard.writeText(text)
+        .then(() => {
+            console.log('Text copied to clipboard');
+        })
+        .catch(err => {
+            console.error('Error in copying text: ', err);
+        });
+    }
+</script>
+{%endblock%}
