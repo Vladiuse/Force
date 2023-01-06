@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RailWays</title>
     <!-- CSS -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -28,9 +28,15 @@ header {
   padding: 1.2rem 2.4rem;
   background-color: #2196f3;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
+header img{
+  width: 150px;
+}
 h1 {
+  display: inline-block;
   margin: 0;
   font-size: 2.8rem;
   font-weight: normal;
@@ -71,7 +77,10 @@ footer a{
 </head>
 <body>
     <header>
-        <h1>{%block page-name%}Сверка списков номеров контейнеров{%endblock%}</h1>
+      {%block page-name%}
+        <h1>Сверка списков <br>номеров контейнеров</h1>
+        <img src="https://www.pngall.com/wp-content/uploads/12/Container-PNG-Image-File.png">
+        {%endblock%}
         </header>
     {%block content%}
     {%endblock%}
