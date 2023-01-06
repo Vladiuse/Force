@@ -157,10 +157,10 @@
     }).attr('disabled', 'disabled')
 </script>
 <script>
-    $('textarea').on('click',function(){
+    $('body').on('click','textarea',function(){
+        $('#copy-chosen').show()
         $('textarea').removeClass('active')
         $(this).addClass('active')
-        $('#copy-chosen').show()
         $('#copy-chosen').data('copy', $(this).attr('id'))
     })
     $('#copy-chosen').click(function(){

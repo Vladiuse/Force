@@ -230,26 +230,4 @@ class ContainerReader:
 
 
 if __name__ == '__main__':
-    # s1 = """style="text-align: center;"
-    #     aaa
-    # bbb
-    # xxx AAAA 1234567 yyyy
-    # xxx BBBB  1234567 yyyy
-    # xxx CCCC1234567 yyyy
-    # ccc
-    #     """
-    # s2 = """
-    #     zzz
-    # yyy
-    # xxx BBBB1234567 yyyy
-    # xxx CCCC1234567 yyyy
-    # xxx DDDD1234567 yyyy
-    # xxx
-    # """
-    # reader = ContainerReader(s1,s2)
-    # print(reader.file_1.containers)
-    # print(reader.incorrect_1())
-    # print(reader.incorrect_2())
-    # print(reader.file_2.containers)
-    c = Container('CCCC1234567')
-    print(c.is_container_number_correct())
+    pass

@@ -13,7 +13,6 @@ def index(requet):
         file_name_2 = requet.POST['file_name_2']
         file_text_1 = requet.POST['file_text_1']
         file_text_2 = requet.POST['file_text_2']
-        print(file_name_1, file_name_2)
         reader = ContainerReader(file_text_1, file_text_2)
         content = {
 
