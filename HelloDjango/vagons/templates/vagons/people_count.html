@@ -21,10 +21,12 @@
   }
 </style>
 <div class="container">
-  <label class="pure-material-switch" data-bs-toggle="tooltip" data-bs-placement="right" title="Показывать только номера контейнеров, либо всю строку с найденым в ней номером из документа целиком">
-    <input id="spellcheck" type="checkbox" checked>
-    <span>Строки целиком</span>
+{%if reader%}
+<label class="pure-material-switch" data-bs-toggle="tooltip" data-bs-placement="right" title="Показывать только номера контейнеров, либо всю строку с найденым в ней номером из документа целиком">
+  <input id="spellcheck" type="checkbox" checked>
+  <span>«Oтображать средний простой»</span>
 </label>
+{%endif%}
   <div class="row">
     <div class="col">
       <form method="POST">
@@ -63,9 +65,9 @@
 
   $('#spellcheck').click(function(){
         if ($('#spellcheck').prop('checked'))
-        {$('.pure-material-switch span').text('C простоем');uploadData(full=true)}
+        {$('.pure-material-switch span').text('«Oтображать средний простой»');uploadData(full=true)}
         else
-        { $('.pure-material-switch span').text('Без простоя');uploadData()}
+        { $('.pure-material-switch span').text('«Скрыть средний простой»');uploadData()}
         
     })
     function uploadData(full){
