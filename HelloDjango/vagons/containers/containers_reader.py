@@ -8,6 +8,13 @@ class NotContainerError(Exception):
 
 
 class Container:
+    A = 'AAAA1234567'
+    B = 'BBBB1234567'
+    C = 'CCCC1234567'
+    D = 'DDDD1234567'
+    F = 'FFFF1234567'
+    E = 'EEEE1234567'
+
     LETTERS_WEIGHT = {
         'A': 10, 'B': 12, 'C': 13, 'D': 14, 'E': 15, 'F': 16, 'G': 17, 'H': 18, 'I': 19, 'J': 20,
         'K': 21, 'L': 23, 'M': 24, 'N': 25, 'O': 26, 'P': 27, 'Q': 28, 'R': 29, 'S': 30, 'T': 31,
@@ -17,6 +24,9 @@ class Container:
     def __init__(self, container_id: str, source_text_line=''):
         self.id = container_id
         self.text_line = source_text_line
+        self.date = None
+
+        self.find_date()
 
     @property
     def json(self):
@@ -30,6 +40,11 @@ class Container:
             return v_number.group(0)
         return None
 
+
+    def find_date(self):
+        date = re.search(r'\d\d\.\d\d.\d{2,4}', self.text_line)
+        if date:
+            self.date = date.group(0)
     @staticmethod
     def prettify_container_number(container_number):
         """Уюирает 00 или 0 у номера контейнера и убирает пробелы"""

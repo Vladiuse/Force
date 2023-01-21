@@ -21,6 +21,10 @@
   }
 </style>
 <div class="container">
+  <label class="pure-material-switch" data-bs-toggle="tooltip" data-bs-placement="right" title="Показывать только номера контейнеров, либо всю строку с найденым в ней номером из документа целиком">
+    <input id="spellcheck" type="checkbox" checked>
+    <span>Строки целиком</span>
+</label>
   <div class="row">
     <div class="col">
       <form method="POST">
@@ -35,7 +39,7 @@
     </div>
     <div class="col">
       <h5>Общее количество: {{counter.GENERAL_COUNT}}</h5>
-      <textarea class="form-control" id="result" {%if not counter.res_text%}disabled{%endif%}>{{counter.res_text}}</textarea>
+      <textarea class="form-control" id="result" {%if not reader%}disabled{%endif%}></textarea>
       {%if counter.res_text%}
       <div class="copy-button">
         <button class="pure-material-button-contained" id="copy" onclick="copyTextCode('result')">Скопировать</button>
@@ -45,13 +49,47 @@
   </div>
 </div>
 <script>
+  let result = {{reader.result_json|safe}};
   $('#clear').click(function(e){
     e.preventDefault()
+    result = []
+    $('#spellcheck').prop('disabled', true)
     $('#copy').hide()
     $('textarea').val('')
     $('#text').removeAttr('disabled')
     $('#result').attr('disabled', 'disabled')
   })
+
+
+  $('#spellcheck').click(function(){
+        if ($('#spellcheck').prop('checked'))
+        {$('.pure-material-switch span').text('C простоем');uploadData(full=true)}
+        else
+        { $('.pure-material-switch span').text('Без простоя');uploadData()}
+        
+    })
+    function uploadData(full){
+      $('#result').val(getDataResult(full))
+    }
+    uploadData(full=true)
+
+    function getDataResult(full=false){
+      let STR_SEP = '    '
+      result_list = []
+      for (i in result){
+        res = []
+        elem = result[i]
+        client_name = elem['name']
+        count = 'КТК:' + elem['len']
+        avg = 'Средний простой:' + elem['avg']
+        res.push(client_name)
+        res.push(count)
+        if (full) {res.push(avg)}
+        res_string = res.join(STR_SEP)
+        result_list.push(res_string)
+      }
+      return result_list.join('\n')
+    }
 </script>
 
 {%endblock%}

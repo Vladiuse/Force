@@ -105,6 +105,21 @@ class TestContainer(unittest.TestCase):
         c2 = Container(B)
         self.assertNotEqual(c1, c2)
 
+    def test_search_date(self):
+        text_line = 'BLRU1001240 КЛДЧ   391464 4574 ВГКП 06.06.22 10-00'
+        c = Container('BLRU1001240', text_line)
+        self.assertEqual(c.date, '06.06.22')
+
+    def test_search_4_digit_year_date(self):
+        text_line = 'BLRU1001240 КЛДЧ   391464 4574 ВГКП 06.06.2022 10-00'
+        c = Container('BLRU1001240', text_line)
+        self.assertEqual(c.date, '06.06.2022')
+
+    def test_no_date(self):
+        text_line = '1 133 WIKU5257276 /99 груж. 191605'
+        c = Container('WIKU5257276', text_line)
+        self.assertIsNone(c.date)
+
 
 class TestContainerList(unittest.TestCase):
 

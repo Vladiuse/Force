@@ -1,7 +1,5 @@
-from django.shortcuts import render, redirect
-from .vagons_reader import VagReader
-from .people_counter import PeopleCounter
-from .containers.containers_reader import ContainerReader
+from django.shortcuts import render
+from .containers import ContainerReader, ClientReader
 
 
 def index(requet):
@@ -34,10 +32,10 @@ def people_count(requests):
         return render(requests, 'vagons/people_count.html')
     else:
         text = requests.POST['text']
-        counter = PeopleCounter(text)
-        counter.proccess()
+        reader = ClientReader(text)
+        reader.process()
         content = {
-            'counter': counter,
+            'reader': reader,
             'text': text,
         }
         return render(requests, 'vagons/people_count.html', content)
