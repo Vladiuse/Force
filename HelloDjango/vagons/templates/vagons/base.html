@@ -6,6 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RailWays</title>
+<!-- DAJNGO ADMIN -->
+
+<link rel="stylesheet" href="/static/admin/css/base.css">
+
+
+<link rel="stylesheet" href="/static/admin/css/forms.css">
+<script src="/static/admin/js/core.js"></script>
+
+
+<script src="/admin/jsi18n/"></script>
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script src="/static/admin/js/calendar.js"></script>
+<script src="/static/admin/js/jquery.init.js"></script>
+<script src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script src="/static/admin/js/actions.js"></script>
+<script src="/static/admin/js/urlify.js"></script>
+<script src="/static/admin/js/prepopulate.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+
+<!-- DAJNGO ADMIN -->
+
     <!-- CSS -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,8 +39,12 @@
     <!-- JS -->
 <script src="/static/jquery/jq.js"></script>
 
-    <!--ICONS-->
-<script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
+
+<!--ICONS-->
+<script src="https://kit.fontawesome.com/da43c2ea11.js" crossorigin="anonymous"></script>
+
+
+
 <style>
     html {
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -72,6 +99,9 @@ footer a{
     font-size: 17px;
     width: 250px;
   }
+  a.btn{
+    color: white !important;
+  }
 </style>
 
 </head>
@@ -106,5 +136,19 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 </script>
+<style>
+  #client-form .field-wrap{
+  display: flex;
+  flex-direction: column;
+  }
+  #client-form .left{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+  #client-form label{
+      font-size: 20px;
+  }
+</style>
 </body>
 </html>

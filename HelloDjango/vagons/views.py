@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
 from .containers import ContainerReader, ClientReader
+from .forms import ClientDocForm
+from .models import ClientDoc, ClientContainerRow
+from django.db.models import F
+from django.utils import timezone
+from django.http import HttpResponseRedirect
 
 
 def index(requet):
@@ -38,4 +43,61 @@ def people_count(requests):
             'reader': reader,
             'text': text,
         }
-        return render(requests, 'vagons/people_count.html', content)
+        return render(requests, 'vagons/clients/people_count.html', content)
+
+
+def clients(request):
+    clients_docs = ClientDoc.objects.defer('document').all()
+    content = {
+        'clients_docs': clients_docs
+    }
+    return render(request, 'vagons/clients/clients.html', content)
+
+
+def client(request, document_id):
+    client_doc = ClientDoc.objects.get(pk=document_id)
+    if request.method == 'POST':
+        print('POST')
+        form = ClientDocForm(request.POST, instance=client_doc)
+        if form.is_valid():
+            print(form.cleaned_data['name'])
+            form.save()
+            print('VALID')
+        else:
+            print('NOT VALID')
+        return HttpResponseRedirect(
+            reverse('vagons:show_client', args=(document_id,)))
+    else:
+        print('GET')
+        rows = ClientContainerRow.objects.filter(document=client_doc).annotate(past=client_doc.document_date - F('date'))
+        form = ClientDocForm(instance=client_doc)
+        content = {
+            'client_doc': client_doc,
+            'rows': rows,
+            'form': form,
+        }
+    return render(request, 'vagons/clients/client.html', content)
+
+
+def create_client(request):
+    if request.method == 'POST':
+        form = ClientDocForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vagons:clients')
+        content = {
+            'form': form.render()
+        }
+        return render(request, 'vagons/clients/create.html', content)
+    else:
+        form = ClientDocForm()
+        content = {
+            'form': form.render()
+        }
+        return render(request, 'vagons/clients/create.html', content)
+
+
+def delete(request, document_id):
+    doc = ClientDoc.objects.get(pk=document_id)
+    doc.delete()
+    return redirect('vagons:clients')

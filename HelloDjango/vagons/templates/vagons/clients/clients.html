@@ -1,0 +1,67 @@
+{% extends 'vagons/base.html'%}
+
+{%block page-name%}
+<style>
+    .card .icon{
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+    .card .icon i{
+        font-size: 120px;
+        color: #2196f3;
+    }
+    #create-new-cod i{
+      color: grey;
+    }
+</style>
+<h1>Clients docs</h1>
+
+
+{%endblock%}
+
+
+{%block content%}
+ 
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-4 g-2">
+        <div class="col">
+            <div class="card text-center " style="width: 18rem;" id="create-new-cod">
+                <div class="card-header">
+                  Создать новый
+                  </div>
+                <!-- <img src="..." class="card-img-top" alt="..."> -->
+                <div class="icon">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{cliend_doc.name}}</h5>
+                  <p class="card-text">{{cliend_doc.description}}</p>
+                  <a href="{%url 'vagons:create_client_doc' %}" class="btn btn-success">Создать</a>
+                </div>
+              </div>
+            </div>
+
+        {%for cliend_doc in clients_docs%}
+        <div class="col">
+        <div class="card h-100 text-center" style="width: 18rem;">
+            <div class="card-header">
+               {{cliend_doc.document_date}}
+              </div>
+            <div class="icon">
+                <i class="fa-solid fa-file-word"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{cliend_doc.name}}</h5>
+              <p class="card-text">{{cliend_doc.description}}</p>
+              <a href="{%url 'vagons:show_client' cliend_doc.pk %}" class="btn btn-primary">Посмотреть</a>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+
+
+{%endblock%}

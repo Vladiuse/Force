@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),
+
     path('admin/', admin.site.urls),
     path('', include('office.urls')),
     path('archive/', include('archive.urls')),

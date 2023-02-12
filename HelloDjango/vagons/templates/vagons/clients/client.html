@@ -1,0 +1,173 @@
+{% extends 'vagons/base.html'%}
+
+{%block page-name%}
+<h1>Show docs</h1>
+{%endblock%}
+
+
+{%block content%}
+<style>
+  table td{
+    text-align: left;
+  }
+  .container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  ul > li {
+    list-style-type: none;
+  }
+</style>
+
+<div class="container">
+    <h2>Документ: {{client_doc.name}}</h2>
+    <p>Дата: {{client_doc.document_date}}</p>
+
+</div>
+<!-- Button trigger modal -->
+
+<div class="container"></i>
+  <a class="btn btn-primary" href="{%url 'vagons:clients'%}" role="button"><i class="fa-solid fa-list"> </i></a>
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Текст документа
+  </button> -->
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <i class="fa-solid fa-pen-to-square"></i> Редактировать
+  </button>
+
+  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalDELETE">Удалить</button>
+</div>
+
+
+<!-- EDIT FROM  -->
+<div class="container">
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <form method="POST" id="client-form">
+        {%csrf_token%}
+        {{form}}
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card text-center" id="result-tables">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="true" href="client_count">Наличие по клиентам</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="client_rows">Строки</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="document_text_rows" >Текст документа</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <table class="table" id="client_count">
+        <thead>
+          <tr>
+            <th scope="col">Client</th>
+            <th scope="col">count</th>
+            <th scope="col">past</th>
+            <th scope="col">max</th>
+            <th scope="col">min</th>
+          </tr>
+        </thead>
+        <tbody>
+            {%for row in client_doc.client_count%}
+          <tr>
+            <td>{{row.client_name}}</td>
+            <td>{{row.count}}</td>
+            <td>{{row.past}}</td>
+            <td>{{row.max}}</td>
+            <td>{{row.min}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+
+      <table class="table" id="client_rows" style="display: none;">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Client</th>
+            <th scope="col">Container</th>
+            <th scope="col">date</th>
+            <th scope="col">past</th>
+          </tr>
+        </thead>
+        <tbody>
+            {%for row in rows%}
+          <tr>
+            <th scope="row">{{row.pk}}</th>
+            <td>{{row.client_name}}</td>
+            <td>{{row.container}}</td>
+            <td>{{row.date}}</td>
+            <td>{{row.past}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+      
+      <table class="table" id="document_text_rows" style="display: none;">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+          </tr>
+        </thead>
+        <tbody>
+            {%for row in client_doc.document_text_rows%}
+          <tr>
+            <td>{{row}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+<!-- EDIT FROM  -->
+<div style="height: 70px;"></div>
+
+
+
+
+
+
+
+<!-- Modal DELETE-->
+<div class="modal fade" id="exampleModalDELETE" tabindex="-1" aria-labelledby="exampleModalDELETELabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalDELETELabel">Удаление документа</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Удалить документ "{{client_doc.name}}" за {{client_doc.document_date}}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <a type="button" href="{%url 'vagons:document_delete' client_doc.pk %}" class="btn btn-danger">Удалить</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $('#result-tables a').click(function(e){
+    $('#result-tables a').removeClass('active')
+    $(this).addClass('active')
+    e.preventDefault()
+    $('#result-tables table').hide()
+    let table_to_show = $(this).attr('href')
+    $('#'+table_to_show).show()
+  })
+  </script>
+{%endblock%}

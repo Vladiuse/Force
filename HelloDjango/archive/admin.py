@@ -3,7 +3,7 @@ from .models import Site, SiteCategoty, Languege, Cataloge, Tag, Test
 # Register your models here.
 
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'path', 'description']
+    list_display = ['id', 'name', 'path', 'description',]
     list_display_links = ['name']
 
 class LanguegeAdmin(admin.ModelAdmin):
