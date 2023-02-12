@@ -86,13 +86,13 @@ def create_client(request):
             form.save()
             return redirect('vagons:clients')
         content = {
-            'form': form.render()
+            'form': form
         }
         return render(request, 'vagons/clients/create.html', content)
     else:
         form = ClientDocForm()
         content = {
-            'form': form.render()
+            'form': form
         }
         return render(request, 'vagons/clients/create.html', content)
 
