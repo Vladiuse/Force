@@ -1,13 +1,13 @@
 {% extends 'vagons/base.html'%}
 
 {%block page-name%}
-<h1>Show docs</h1>
+<h1>Наличие по клиентам</h1>
 {%endblock%}
 
 
 {%block content%}
 <style>
-  table td{
+  table td,table th{
     text-align: left;
   }
   .container{
@@ -17,7 +17,22 @@
   ul > li {
     list-style-type: none;
   }
+  #site-message{
+    margin-bottom: 5px;
+  }
 </style>
+
+<div class="toast align-items-center text-white bg-primary border-0 position-fixed bottom-0 end-0"
+ role="alert" aria-live="assertive" aria-atomic="true" id="site-message" style="z-index: 11" data-bs-deley="5000">
+    <div class="d-flex">
+      <div class="toast-body">
+        Скопировано
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+
+
 
 <div class="container">
     <h2>Документ: {{client_doc.name}}</h2>
@@ -27,15 +42,12 @@
 <!-- Button trigger modal -->
 
 <div class="container"></i>
-  <a class="btn btn-primary" href="{%url 'vagons:clients'%}" role="button"><i class="fa-solid fa-list"> </i></a>
-  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Текст документа
-  </button> -->
+  <a class="btn btn-primary" href="{%url 'vagons:clients'%}" role="button"><i class="fa-solid fa-list"> </i>Все документы</a>
   <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
     <i class="fa-solid fa-pen-to-square"></i> Редактировать
   </button>
-
-  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalDELETE">Удалить</button>
+  <button class="btn btn-primary" id="copy_table"><i class="fa-solid fa-copy"></i>Скопировать</button>
+  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalDELETE"><i class="fa-solid fa-trash"></i>Удалить</button>
 </div>
 
 
@@ -196,14 +208,48 @@
 </div>
 
 
+
 <script>
+  var current_table_id = 'client_count'
   $('#result-tables a').click(function(e){
     $('#result-tables a').removeClass('active')
     $(this).addClass('active')
     e.preventDefault()
     $('#result-tables table').hide()
     let table_to_show = $(this).attr('href')
+    current_table_id = table_to_show;
     $('#'+table_to_show).show()
   })
+  </script>
+  <script>
+    function selectElementContents(el) {
+    var body = document.body, range, sel;
+    if (document.createRange && window.getSelection) {
+        range = document.createRange();
+        sel = window.getSelection();
+        sel.removeAllRanges();
+        try {
+            range.selectNodeContents(el);
+            sel.addRange(range);
+        } catch (e) {
+            range.selectNode(el);
+            sel.addRange(range);
+        }
+    } else if (body.createTextRange) {
+        range = body.createTextRange();
+        range.moveToElementText(el);
+        range.select();
+    }
+    document.execCommand("Copy");}
+    
+
+    $('#copy_table').click(function(){
+      let table_to_copy = current_table_id;
+      let elem = document.getElementById(table_to_copy)
+      selectElementContents(elem)
+      $('.toast').toast('show');
+    })
+    
+
   </script>
 {%endblock%}

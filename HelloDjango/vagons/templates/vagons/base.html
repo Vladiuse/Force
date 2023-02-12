@@ -8,7 +8,7 @@
     <title>RailWays</title>
 <!-- DAJNGO ADMIN -->
 
-<link rel="stylesheet" href="/static/admin/css/base.css">
+<!-- <link rel="stylesheet" href="/static/admin/css/base.css">
 
 
 <link rel="stylesheet" href="/static/admin/css/forms.css">
@@ -25,7 +25,7 @@
 <script src="/static/admin/js/actions.js"></script>
 <script src="/static/admin/js/urlify.js"></script>
 <script src="/static/admin/js/prepopulate.js"></script>
-<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script> -->
 
 <!-- DAJNGO ADMIN -->
 
@@ -102,6 +102,9 @@ footer a{
   a.btn{
     color: white !important;
   }
+  a i,button i{
+    margin-right: 5px;
+  }
 </style>
 
 </head>
@@ -116,7 +119,7 @@ footer a{
     {%endblock%}
     <footer class="position-fixed">
       <a href="{%url 'vagons:index'%}" target="_top">Сверка номеров контейнеров</a> &nbsp; | &nbsp;
-        <a href="{%url 'vagons:people_count'%}" target="_top">Наличие по клиентам</a> &nbsp;
+        <a href="{%url 'vagons:clients'%}" target="_top">Наличие по клиентам</a> &nbsp;
     </footer>
     <script>
       function copyTextCode(elem){
@@ -150,5 +153,9 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       font-size: 20px;
   }
 </style>
+<script>
+  $('input,textarea').addClass('form-control')
+</script>
+
 </body>
 </html>

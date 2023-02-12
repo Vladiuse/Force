@@ -1,13 +1,14 @@
 {% extends 'vagons/base.html'%}
 
 {%block page-name%}
-<h1>Create people</h1>
+<h1>Наличие по клиентам</h1>
 {%endblock%}
 
 
 {%block content%}
 
 <div class="container">
+    <a class="btn btn-primary" href="{%url 'vagons:clients'%}" role="button"><i class="fa-solid fa-list"> </i>Все документы</a>
     <form method="POSt" id="client-form">
         {%csrf_token%}
                 <!-- CLIENT FROM  -->

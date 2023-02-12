@@ -27,9 +27,10 @@ class ClientDoc(models.Model):
         ELSE '-'
     END as min
     FROM vagons_clientcontainerrow
-    GROUP BY client_name ORDER BY past DESC;
+    WHERE document_id = %d
+    GROUP BY client_name ORDER BY count DESC;
     """
-    name = models.CharField(max_length=40, verbose_name='Имя документа', default='No name')
+    name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени')
     document = models.TextField(verbose_name='Текст документа')
     load_date = models.DateField(default=timezone.now, editable=False)
     document_date = models.DateField(default=timezone.now)
@@ -74,7 +75,7 @@ class ClientDoc(models.Model):
 
     def client_count(self):
         with connection.cursor() as cursor:
-            cursor.execute(self.QUERY)
+            cursor.execute(self.QUERY % self.pk)
             # rows = cursor.fetchall()
             rows = dictfetchall(cursor)
         return rows
@@ -87,6 +88,9 @@ class ClientContainerRow(models.Model):
     container = models.CharField(max_length=11, )
     client_name = models.CharField(max_length=30)
     date = models.DateField()
+
+    class Meta:
+        ordering = ['client_name', 'date']
 
     def __str__(self):
         return f'{self.client_name}{self.container}'
