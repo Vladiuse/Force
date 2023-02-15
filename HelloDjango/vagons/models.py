@@ -17,13 +17,13 @@ def dictfetchall(cursor):
 class ClientDoc(models.Model):
     QUERY = """
     SELECT client_name, COUNT(*)as count , 
-    ROUND(AVG(DATEDIFF(NOW(), date))) as past,
+    ROUND(AVG(DATEDIFF('%s', date))) as past,
     CASE
-        WHEN COUNT(*) > 1 THEN MAX( DATEDIFF(NOW(), date))
+        WHEN COUNT(*) > 1 THEN MAX( DATEDIFF('%s', date))
         ELSE '-'
     END as max,
     CASE
-        WHEN COUNT(*) > 1 THEN MIN( DATEDIFF(NOW(), date))
+        WHEN COUNT(*) > 1 THEN MIN( DATEDIFF('%s', date))
         ELSE '-'
     END as min
     FROM vagons_clientcontainerrow
@@ -75,7 +75,9 @@ class ClientDoc(models.Model):
 
     def client_count(self):
         with connection.cursor() as cursor:
-            cursor.execute(self.QUERY % self.pk)
+            result_query = self.QUERY % (self.document_date,self.document_date, self.document_date,self.pk)
+            print(result_query)
+            cursor.execute(result_query)
             # rows = cursor.fetchall()
             rows = dictfetchall(cursor)
         return rows
