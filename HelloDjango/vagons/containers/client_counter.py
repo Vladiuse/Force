@@ -16,8 +16,11 @@ class ClientContainer:
         return (date.today() - self.date).days
 
     @staticmethod
-    def get_client_name_from_row(text_row):
-        return text_row[93:109]
+    def get_client_name_from_row(text_row, pos):
+        start, end = pos
+        start, end = int(start), int(end)
+        return text_row[start:end]
+        # return text_row[93:109]
 
 
 class Client:

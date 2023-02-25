@@ -55,7 +55,7 @@
 <div class="container">
   <div class="collapse" id="collapseExample">
     <div class="card card-body">
-      <form method="POST" id="client-form">
+      <form method="POST" id="client-form" enctype="multipart/form-data">
         {%csrf_token%}
                 <!-- CLIENT FROM  -->
                 {{ form.non_field_errors }}
@@ -73,10 +73,20 @@
                             {{ form.document_date }}
                         </div>
                         <div class="field-wrap">
+                          {{ form.client_row_pos.errors }}
+                          <label for="{{ form.client_row_pos.id_for_label }}">{{form.client_row_pos.label}}:</label>
+                          {{ form.client_row_pos }}
+                      </div>
+                        <div class="field-wrap">
                             {{ form.description.errors }}
                             <label for="{{ form.description.id_for_label }}">{{form.description.label}}:</label>
                             {{ form.description }}
                         </div>
+                        <div class="field-wrap file">
+                          {{ form.document_file.errors }}
+                          <label for="{{ form.document_file.id_for_label }}">{{form.document_file.label}}:</label>
+                         {{ form.document_file }}
+                      </div>
                         <div class="field-wrap">
                             <button class="btn btn-primary" type="submit">Сохранить</button>
                         </div>
@@ -118,11 +128,11 @@
       <table class="table table-striped" id="client_count">
         <thead>
           <tr>
-            <th scope="col">Client</th>
-            <th scope="col">count</th>
-            <th scope="col">past</th>
-            <th scope="col">max</th>
-            <th scope="col">min</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Наличие КТК</th>
+            <th scope="col">Средний простой</th>
+            <th scope="col">Максимальный простой </th>
+            <th scope="col">Минимальный простой</th>
           </tr>
         </thead>
         <tbody>
@@ -142,10 +152,10 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Client</th>
-            <th scope="col">Container</th>
-            <th scope="col">date</th>
-            <th scope="col">past</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Контейнер</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Простой</th>
           </tr>
         </thead>
         <tbody>

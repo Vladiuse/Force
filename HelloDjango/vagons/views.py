@@ -57,18 +57,14 @@ def clients(request):
 def client(request, document_id):
     client_doc = ClientDoc.objects.get(pk=document_id)
     if request.method == 'POST':
-        print('POST')
-        form = ClientDocForm(request.POST, instance=client_doc)
+        form = ClientDocForm(request.POST, request.FILES,instance=client_doc)
         if form.is_valid():
-            print(form.cleaned_data['name'])
             form.save()
-            print('VALID')
         else:
             print('NOT VALID')
         return HttpResponseRedirect(
             reverse('vagons:show_client', args=(document_id,)))
     else:
-        print('GET')
         rows = ClientContainerRow.objects.filter(document=client_doc).annotate(past=client_doc.document_date - F('date'))
         form = ClientDocForm(instance=client_doc)
         content = {

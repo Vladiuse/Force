@@ -105,6 +105,10 @@ footer a{
   a i,button i{
     margin-right: 5px;
   }
+  a i:last-child,
+  button i:last-child{
+    margin-right: 0px;
+  }
   .btn-primary{
     background-color: #2196f3;
     border-color: #2196f3;
@@ -148,6 +152,9 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   display: flex;
   flex-direction: column;
   }
+  #client-form button{
+    margin-top: 10px;
+  }
   #client-form .left{
       display: flex;
       flex-direction: column;
@@ -156,9 +163,13 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   #client-form label{
       font-size: 20px;
   }
+  #client-form .file{
+    display: block;
+  }
 </style>
 <script>
-  $('input,textarea').addClass('form-control')
+  $('input[type!=checkbox],textarea').addClass('form-control')
+  $('select').addClass('form-select')
 </script>
 
 </body>

@@ -9,7 +9,7 @@
 
 <div class="container">
     <a class="btn btn-primary" href="{%url 'vagons:clients'%}" role="button"><i class="fa-solid fa-list"> </i>Все документы</a>
-    <form method="POSt" id="client-form">
+    <form method="POSt" id="client-form" enctype="multipart/form-data">
         {%csrf_token%}
                 <!-- CLIENT FROM  -->
                 {{ form.non_field_errors }}
@@ -27,9 +27,19 @@
                             {{ form.document_date }}
                         </div>
                         <div class="field-wrap">
+                            {{ form.client_row_pos.errors }}
+                            <label for="{{ form.client_row_pos.id_for_label }}">{{form.client_row_pos.label}}:</label>
+                            {{ form.client_row_pos }}
+                        </div>
+                        <div class="field-wrap">
                             {{ form.description.errors }}
                             <label for="{{ form.description.id_for_label }}">{{form.description.label}}:</label>
                             {{ form.description }}
+                        </div>
+                        <div class="field-wrap">
+                            {{ form.document_file.errors }}
+                            <label for="{{ form.document_file.id_for_label }}">{{form.document_file.label}}:</label>
+                            {{ form.document_file }}
                         </div>
                         <div class="field-wrap">
                             <button class="btn btn-primary" type="submit">Сохранить</button>

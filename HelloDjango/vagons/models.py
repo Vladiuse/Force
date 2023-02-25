@@ -30,11 +30,18 @@ class ClientDoc(models.Model):
     WHERE document_id = %d
     GROUP BY client_name ORDER BY count DESC;
     """
+    CLIENT_POS_IN_ROW = (
+        ('93:109', '93:109'),
+        ('48:75', '48:75'),
+    )
+
     name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени')
     document = models.TextField(verbose_name='Текст документа')
     load_date = models.DateField(default=timezone.now, editable=False)
     document_date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True, default='Нет описания')
+    client_row_pos = models.CharField(max_length=10, choices=CLIENT_POS_IN_ROW, default='93:109')
+    document_file = models.FileField(upload_to='vagons/client_container', blank=True, verbose_name='Исходный документ')
 
     class Meta:
         ordering = ['-document_date', '-pk']
@@ -59,7 +66,8 @@ class ClientDoc(models.Model):
         for line in str(self.document).split('\n'):
             cont = Container.find_container_number(line)
             date = re.search(r'\d\d\.\d\d.\d{4}', line)
-            client_name = ClientContainer.get_client_name_from_row(line)
+            pos = str(self.client_row_pos).split(':')
+            client_name = ClientContainer.get_client_name_from_row(line, pos)
             if cont and date:
                 date = datetime.strptime(date.group(0), '%d.%m.%Y').date()
                 row = ClientContainerRow(document=self,container=cont,client_name=client_name,date=date)
@@ -76,7 +84,6 @@ class ClientDoc(models.Model):
     def client_count(self):
         with connection.cursor() as cursor:
             result_query = self.QUERY % (self.document_date,self.document_date, self.document_date,self.pk)
-            print(result_query)
             cursor.execute(result_query)
             # rows = cursor.fetchall()
             rows = dictfetchall(cursor)

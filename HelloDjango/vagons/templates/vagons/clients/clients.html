@@ -14,6 +14,14 @@
     #create-new-cod i{
       color: grey;
     }
+    .card .buttons{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card .buttons a{
+      margin: 0 2px;
+    }
 </style>
 <h1>Наличие по клиентам</h1>
 
@@ -44,7 +52,7 @@
 
         {%for cliend_doc in clients_docs%}
         <div class="col">
-        <div class="card h-100 text-center" style="width: 10rem;">
+        <div class="card h-100 text-center" style="width: 12rem;">
             <div class="card-header">
                {{cliend_doc.document_date}}
               </div>
@@ -54,7 +62,12 @@
             <div class="card-body">
               <h5 class="card-title">{{cliend_doc.name}}</h5>
               <p class="card-text">{{cliend_doc.description}}</p>
+             <div class="buttons">
               <a href="{%url 'vagons:show_client' cliend_doc.pk %}" class="btn btn-primary">Посмотреть</a>
+              {%if cliend_doc.document_file%}
+              <a href="{{cliend_doc.document_file.url}}" class="btn btn-primary"><i class="fa-solid fa-file-export"></i></a>
+              {%endif%}
+             </div>
             </div>
           </div>
         </div>
