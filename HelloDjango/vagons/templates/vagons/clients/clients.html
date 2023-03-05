@@ -24,25 +24,9 @@
 
 
 {%block content%}
- 
+
 <div class="container">
-    <div class="row row-cols-1 row-cols-md-6 g-2">
-        <div class="col">
-            <div class="card text-center " style="width: 10rem;" id="create-new-cod">
-                <div class="card-header">
-                  Создать новый
-                  </div>
-                <div class="icon">
-                    <i class="fa-solid fa-file-circle-plus"></i>
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">{{cliend_doc.name}}</h5>
-                  <p class="card-text">{{cliend_doc.description}}</p>
-                  <a href="{%url 'vagons:create_client_doc' %}" class="btn btn-success">Создать</a>
-                </div>
-              </div>
-            </div>
-    </div>
+  <a href="{%url 'vagons:create_client_doc' %}" class="btn btn-success">Создать новый <i class="fa-solid fa-file-circle-plus"></i></a>
 </div>
 
 <br>

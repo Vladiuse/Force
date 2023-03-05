@@ -37,11 +37,11 @@ class ClientDoc(models.Model):
     )
 
     name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени')
-    document = models.TextField(verbose_name='Текст документа')
+    document = models.TextField(verbose_name='Текст документа',)
     load_date = models.DateField(default=timezone.now, editable=False)
-    document_date = models.DateField(default=timezone.now)
-    description = models.TextField(blank=True, default='Нет описания')
-    client_row_pos = models.CharField(max_length=10, choices=CLIENT_POS_IN_ROW, default='93:109',verbose_name='Поиск клиента в строке')
+    document_date = models.DateField(default=timezone.now, verbose_name='Дата документа')
+    description = models.TextField(blank=True, default='Нет описания', verbose_name='')
+    client_row_pos = models.CharField(max_length=10, choices=CLIENT_POS_IN_ROW, default='93:109',verbose_name='Тип загржаемого файла')
     document_file = models.FileField(upload_to='vagons/client_container', blank=True, verbose_name='Исходный документ')
 
     class Meta:
@@ -51,6 +51,7 @@ class ClientDoc(models.Model):
         if self.pk:
             super().save()
         else:
+            self.document_file.filename.decode('utf8')
             super().save()
             self.read_doc()
 
