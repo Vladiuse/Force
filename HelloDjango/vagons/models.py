@@ -32,6 +32,11 @@ class ClientDoc(models.Model):
     WHERE document_id = %d
     GROUP BY client_name ORDER BY count DESC;
     """
+
+    DOC_NAME = {
+        '93:109':'Наличие по получателям',
+        '48:75':'Автовывоз',
+    }
     CLIENT_POS_IN_ROW = (
         ('93:109', 'Книга выгрузки'),
         ('48:75', 'Книга вывоза'),
@@ -52,6 +57,10 @@ class ClientDoc(models.Model):
         if self.pk:
             super().save()
         else:
+            try:
+                self.name = self.DOC_NAME[self.client_row_pos]
+            except KeyError:
+                pass
             self.document_file.name = unidecode(self.document_file.name)
             super().save()
             self.read_doc()
