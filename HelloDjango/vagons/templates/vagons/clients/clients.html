@@ -2,26 +2,20 @@
 
 {%block page-name%}
 <style>
-    .card .icon{
-        display: flex;
+
+    #create-new-cod i{
+      display: flex;
         justify-content: center;
         padding: 10px;
-    }
-    .card .icon i{
-        font-size: 70px;
-        color: #2196f3;
-    }
-    #create-new-cod i{
       color: grey;
+      font-size: 70px;
     }
     .card .buttons{
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .card .buttons a{
-      margin: 0 2px;
-    }
+
 </style>
 <h1>Наличие по клиентам</h1>
 
@@ -38,7 +32,6 @@
                 <div class="card-header">
                   Создать новый
                   </div>
-                <!-- <img src="..." class="card-img-top" alt="..."> -->
                 <div class="icon">
                     <i class="fa-solid fa-file-circle-plus"></i>
                 </div>
@@ -49,32 +42,49 @@
                 </div>
               </div>
             </div>
-
-        {%for cliend_doc in clients_docs%}
-        <div class="col">
-        <div class="card h-100 text-center" style="width: 12rem;">
-            <div class="card-header">
-               {{cliend_doc.document_date}}
-              </div>
-            <div class="icon">
-                <i class="fa-solid fa-file-word"></i>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{cliend_doc.name}}</h5>
-              <p class="card-text">{{cliend_doc.description}}</p>
-             <div class="buttons">
-              <a href="{%url 'vagons:show_client' cliend_doc.pk %}" class="btn btn-primary">Посмотреть</a>
-              {%if cliend_doc.document_file%}
-              <a href="{{cliend_doc.document_file.url}}" class="btn btn-primary"><i class="fa-solid fa-file-export"></i></a>
-              {%endif%}
-             </div>
-            </div>
-          </div>
-        </div>
-        {%endfor%}
     </div>
 </div>
 
+<br>
+<div class="container">
+  {% regroup clients_docs by document_date|date:"F" as cliend_doc_mounth %}
+  <table class="table table-striped">
+    <thead>
+      <tr  class="table-primary">
+        <th scope="col">Имя</th>
+        <th scope="col">Дата</th>
+        <th scope="col">Описание</th>
+        <th scope="col">Файл</th>
+        <th scope="col">Дата загрузки</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for mounth in cliend_doc_mounth%}
+      <tr>
+        <td colspan="5" class="table-info">{{mounth.grouper}}</td>
+      </tr>
+          {%for cliend_doc in mounth.list %}
+          <tr>
+            <td >
+              <a href="{%url 'vagons:show_client' cliend_doc.pk %}">{{cliend_doc.name}}</a>
+            </td>
+            <td>
+              <a href="{%url 'vagons:show_client' cliend_doc.pk %}">{{cliend_doc.document_date}}</a>
+            </td>
+            <td>{{cliend_doc.description}}</td>
+            <td>
+              {%if cliend_doc.document_file%}
+              <a href="{{cliend_doc.document_file.url}}">{{cliend_doc.docfile_name}}</a>
+              {%endif%}
+            </td>
+            <td>{{cliend_doc.load_date}}</td>
+          </tr>
+          {%endfor%}
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+  
 
 
 {%endblock%}

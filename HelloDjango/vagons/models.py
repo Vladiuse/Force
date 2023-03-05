@@ -4,6 +4,7 @@ from django.utils import timezone
 from .containers import Container, ClientContainer
 from datetime import datetime
 from django.db import connection
+import os
 
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
@@ -47,14 +48,14 @@ class ClientDoc(models.Model):
         ordering = ['-document_date', '-pk']
 
     def save(self, **kwargs):
-        print('Self PK', self.pk)
         if self.pk:
             super().save()
-            print('Save')
         else:
             super().save()
             self.read_doc()
-            print('Save n read')
+
+    def docfile_name(self):
+        return os.path.basename(str(self.document_file))
 
 
     def read_doc(self):
