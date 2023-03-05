@@ -42,7 +42,7 @@ class ClientDoc(models.Model):
         ('48:75', 'Книга вывоза'),
     )
 
-    name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени')
+    name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени', blank=True)
     document = models.TextField(verbose_name='Текст документа',)
     load_date = models.DateField(default=timezone.now, editable=False)
     document_date = models.DateField(default=timezone.now, verbose_name='Дата документа')
