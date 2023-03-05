@@ -32,8 +32,8 @@ class ClientDoc(models.Model):
     GROUP BY client_name ORDER BY count DESC;
     """
     CLIENT_POS_IN_ROW = (
-        ('93:109', '93:109'),
-        ('48:75', '48:75'),
+        ('93:109', 'Книга выгрузки'),
+        ('48:75', 'Книга вывоза'),
     )
 
     name = models.CharField(max_length=40, verbose_name='Имя документа', default='Без имени')
@@ -41,7 +41,7 @@ class ClientDoc(models.Model):
     load_date = models.DateField(default=timezone.now, editable=False)
     document_date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True, default='Нет описания')
-    client_row_pos = models.CharField(max_length=10, choices=CLIENT_POS_IN_ROW, default='93:109')
+    client_row_pos = models.CharField(max_length=10, choices=CLIENT_POS_IN_ROW, default='93:109',verbose_name='Поиск клиента в строке')
     document_file = models.FileField(upload_to='vagons/client_container', blank=True, verbose_name='Исходный документ')
 
     class Meta:
