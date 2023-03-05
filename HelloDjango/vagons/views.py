@@ -5,6 +5,7 @@ from .models import ClientDoc, ClientContainerRow
 from django.db.models import F
 from django.utils import timezone
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseBadRequest
 
 
 def index(requet):
@@ -56,28 +57,30 @@ def clients(request):
 
 def client(request, document_id):
     client_doc = ClientDoc.objects.get(pk=document_id)
+    rows = ClientContainerRow.objects.filter(document=client_doc).annotate(past=client_doc.document_date - F('date'))
     if request.method == 'POST':
         form = ClientDocForm(request.POST, request.FILES,instance=client_doc)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(
+                reverse('vagons:show_client', args=(document_id,)))
         else:
-            print('NOT VALID')
-        return HttpResponseRedirect(
-            reverse('vagons:show_client', args=(document_id,)))
+            form_show = True
     else:
-        rows = ClientContainerRow.objects.filter(document=client_doc).annotate(past=client_doc.document_date - F('date'))
         form = ClientDocForm(instance=client_doc)
-        content = {
-            'client_doc': client_doc,
-            'rows': rows,
-            'form': form,
-        }
+        form_show = False
+    content = {
+        'client_doc': client_doc,
+        'rows': rows,
+        'form': form,
+        'form_show': form_show,
+    }
     return render(request, 'vagons/clients/client.html', content)
 
 
 def create_client(request):
     if request.method == 'POST':
-        form = ClientDocForm(request.POST)
+        form = ClientDocForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('vagons:clients')

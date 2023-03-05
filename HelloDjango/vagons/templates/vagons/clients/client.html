@@ -53,7 +53,7 @@
 
 <!-- EDIT FROM  -->
 <div class="container">
-  <div class="collapse" id="collapseExample">
+  <div class="collapse {%if form_show%}show{%endif%}" id="collapseExample">
     <div class="card card-body">
       <form method="POST" id="client-form" enctype="multipart/form-data">
         {%csrf_token%}
