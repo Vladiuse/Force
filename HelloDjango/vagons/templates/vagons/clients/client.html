@@ -114,17 +114,18 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="true" href="client_count">Наличие по клиентам</a>
+          <a class="nav-link active" aria-current="true" id="tab-client_count" data-table="client_count">Наличие по клиентам</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="client_rows">Строки</a>
+          <a class="nav-link" id="tab-client_rows" data-table="client_rows">Строки <span></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="document_text_rows" >Текст документа</a>
+          <a class="nav-link" id="tab-document_text_rows" data-table="document_text_rows">Текст документа</a>
         </li>
       </ul>
     </div>
     <div class="card-body">
+      <button class="btn btn-secondary" id="client_filter" onclick="dropFilter()" style="display: none;">Сбросить фильтр:<span></span></button>
       <table class="table table-striped" id="client_count">
         <thead>
           <tr>
@@ -138,7 +139,7 @@
         <tbody>
             {%for row in client_doc.client_count%}
           <tr>
-            <td>{{row.client_name}}</td>
+            <td><a href="#" class="client-filter">{{row.client_name}}</a></td>
             <td>{{row.count}}</td>
             <td>{{row.past}}</td>
             <td>{{row.max}}</td>
@@ -162,7 +163,7 @@
             {%for row in rows%}
           <tr>
             <th scope="row">{{row.pk}}</th>
-            <td>{{row.client_name}}</td>
+            <td class="client_name">{{row.client_name}}</td>
             <td>{{row.container}}</td>
             <td>{{row.date}}</td>
             <td>{{row.past}}</td>
@@ -219,17 +220,56 @@
 
 
 
-<script>
-  var current_table_id = 'client_count'
-  $('#result-tables a').click(function(e){
-    $('#result-tables a').removeClass('active')
-    $(this).addClass('active')
+<script>  var current_table_id = 'client_count'
+  $('#result-tables .nav a').click(function(e){
     e.preventDefault()
-    $('#result-tables table').hide()
-    let table_to_show = $(this).attr('href')
-    current_table_id = table_to_show;
-    $('#'+table_to_show).show()
+    let table_to_show = $(this).data('table')
+    showTable(table_to_show)
   })
+  function showTable(table_id){
+    $('#result-tables .card-header a').removeClass('active')
+    $('#result-tables .card-header a').each(function(){
+      if ($(this).data('table')==table_id){$(this).addClass('active')}
+    })
+    $('#result-tables table').hide()
+    $('#'+table_id).show()
+    current_table_id = table_id;
+  }
+  function filterCliendTable(client_name){
+    let rows = $('#client_rows tbody tr')
+    if (client_name == null){
+      rows.show();
+      return
+    }
+    showButtonFilter(client_name)
+    markTabFilter(client_name)
+    
+    rows.each(function(){
+      let client_cell = $(this).find('.client_name')
+      if (client_cell.text()== client_name)
+      {$(this).show()} else {$(this).hide()}
+    })
+  }
+  function markTabFilter(text){
+    $('#tab-client_rows span').text(text)
+  }
+  function showButtonFilter(text){
+    $('#client_filter span').text(text)
+    $('#client_filter').show()
+  }
+  function dropFilter(){
+    $('#client_filter').hide()
+    markTabFilter('')
+    filterCliendTable(null)
+  }
+
+  $('a.client-filter').click(function(e){
+      e.preventDefault();
+      var client_name = $(this).text()
+      console.log(client_name)
+      showTable('client_rows')
+      filterCliendTable(client_name)
+    })
   </script>
   <script>
     function selectElementContents(el) {
@@ -261,5 +301,8 @@
     })
     
 
+  </script>
+  <script>
+  
   </script>
 {%endblock%}

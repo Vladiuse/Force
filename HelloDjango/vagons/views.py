@@ -101,3 +101,5 @@ def delete(request, document_id):
     doc = ClientDoc.objects.get(pk=document_id)
     doc.delete()
     return redirect('vagons:clients')
+
+
