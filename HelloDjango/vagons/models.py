@@ -5,6 +5,7 @@ from .containers import Container, ClientContainer
 from datetime import datetime
 from django.db import connection
 import os
+from unidecode import unidecode
 
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
@@ -51,7 +52,7 @@ class ClientDoc(models.Model):
         if self.pk:
             super().save()
         else:
-            self.document_file.name.decode('utf8')
+            self.document_file.name = unidecode(self.document_file.name)
             super().save()
             self.read_doc()
 
