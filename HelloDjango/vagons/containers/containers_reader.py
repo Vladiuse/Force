@@ -203,6 +203,8 @@ class ContainerFile:
 
     def __init__(self, text_file):
         self.text_file = text_file
+        for char in '"\'':
+            self.text_file = self.text_file.replace(char, '')
         self.containers = ContainerList()
         self.no_containers_lines = []
 
